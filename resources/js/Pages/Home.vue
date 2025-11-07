@@ -39,7 +39,12 @@
             At Neema Tradings, we provide comprehensive business solutions to help entrepreneurs and companies navigate compliance, secure funding opportunities, and build sustainable growth strategies.
           </p>
           <div class="hero-buttons">
-            <button class="btn-primary" @click="scrollToContact">Get Started</button>
+            <button class="btn-primary" @click="openWhatsApp">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+              <font-awesome-icon :icon="['fab', 'whatsapp']" />
+              <div>Get Started</div>
+              </div>
+            </button>
             <button class="btn-secondary" @click="scrollToServices">Our Services</button>
           </div>
         </div>
@@ -183,7 +188,7 @@
     </section>
 
     <!-- Why Choose Us Section -->
-    <section class="why-section">
+    <section class="why-section" id="why">
       <div class="container">
         <div class="why-grid">
           <div class="why-content">
@@ -257,7 +262,12 @@
         <div class="cta-content">
           <h2>Ready to Take Your Business to the Next Level?</h2>
           <p>Let Neema Tradings be your reliable partner in business growth and compliance. Get started today!</p>
-          <button class="btn-cta" @click="scrollToContact">Contact Us Now</button>
+          <button class="btn-cta" @click="openWhatsApp">
+            <div class="d-flex justify-content-between align-items-center gap-2">
+              <font-awesome-icon :icon="['fab', 'whatsapp']" />
+              <div>Contact Us Now</div>
+            </div>
+          </button>
         </div>
       </div>
     </section>
@@ -382,6 +392,13 @@ onMounted(() => {
     document.head.appendChild(script);
   }
 });
+
+const openWhatsApp = () => {
+  const phoneNumber = '27738114652'; // Neema Tradings WhatsApp number
+  const message = encodeURIComponent('Hello, I am interested in your services.');
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+  window.open(whatsappURL, '_blank');
+};
 
 const scrollToServices = () => {
   document.getElementById('services').scrollIntoView({ behavior: 'smooth' });

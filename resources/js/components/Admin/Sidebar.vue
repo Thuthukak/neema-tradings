@@ -91,32 +91,37 @@ export default {
     return {
       navigationItems: [
         {
-          path: '/admin/dashboard',
-          label: 'Dashboard',
-          icon: ['fas', 'home'],
-        },
-        {
-          path: '/admin/quotations',
-          label: 'Quotations',
-          icon: ['fas', 'clipboard-list'],
-        },
-        {
-          path: '/admin/invoices',
-          label: 'Invoices',
-          icon: ['fas', 'file-invoice-dollar'],
-        },
-        {
-          path: '/admin/services',
-          label: 'Services',
-          // graphic design services
-          icon: ['fas', 'paint-brush'],
-          
+          path: '/admin/enquiries',
+          label: 'Enquiries',
+          icon: ['fas', 'clipboard-list' ],
         },
         {
           path: '/admin/settings',
           label: 'Settings',
           icon: ['fas', 'cog'],
         },
+        // {
+        //   path: '/admin/dashboard',
+        //   label: 'Dashboard',
+        //   icon: ['fas', 'home'],
+        // },
+        // {
+        //   path: '/admin/quotations',
+        //   label: 'Quotations',
+        //   icon: ['fas', 'clipboard-list'],
+        // },
+        // {
+        //   path: '/admin/invoices',
+        //   label: 'Invoices',
+        //   icon: ['fas', 'file-invoice-dollar'],
+        // },
+        // {
+        //   path: '/admin/services',
+        //   label: 'Services',
+        //   // graphic design services
+        //   icon: ['fas', 'paint-brush'],
+          
+        // },
       ],
     };
   },

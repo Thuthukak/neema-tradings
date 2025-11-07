@@ -66,6 +66,11 @@ import {
     faFileContract,
     faCalendarCheck,
     faGraduationCap,
+    faMapMarkerAlt,
+    faTimes,
+    faUserTie,
+    faBriefcase,
+    faStar,
 
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -73,7 +78,10 @@ import {
     faTiktok,
     faYoutube,
     faInstagram,
-    faFacebook
+    faFacebook,
+    faWhatsapp,
+    faFacebookF,
+    faLinkedinIn
 } from "@fortawesome/free-brands-svg-icons";
 import { faReceipt } from '@fortawesome/free-solid-svg-icons/faReceipt';
 import { faInbox } from '@fortawesome/free-solid-svg-icons/faInbox';
@@ -82,6 +90,8 @@ import { faInbox } from '@fortawesome/free-solid-svg-icons/faInbox';
 library.add(
     faBars,
     faFacebook,
+    faFacebookF,
+    faLinkedinIn,
     faInstagram,
     faYoutube,
     faTiktok, 
@@ -89,6 +99,7 @@ library.add(
     faFileInvoiceDollar, 
     faSun, 
     faGlobe, 
+    faMapMarkerAlt,
     faUser, 
     faBell, 
     faCog, 
@@ -136,7 +147,12 @@ library.add(
     faBuilding,
     faFileContract,
     faCalendarCheck,
-    faGraduationCap
+    faGraduationCap,
+    faWhatsapp,
+    faTimes,
+    faUserTie,
+    faBriefcase,
+    faStar
 
 );
 
