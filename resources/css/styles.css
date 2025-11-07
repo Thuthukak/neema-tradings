@@ -1,0 +1,6 @@
+brand primary variable and brand secondary variable */
+:root {
+  --brand-primary: #303032;
+  --brand-secondary: #9d9a6f;
+}
+/* General styles */
