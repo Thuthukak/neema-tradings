@@ -328,12 +328,12 @@
                 <input v-model="form.name" type="text" placeholder="Enter your full name" required>
               </div>
               <div class="form-group">
-                <label>Email Address *</label>
-                <input v-model="form.email" type="email" placeholder="your.email@example.com" required>
+                <label>Phone Number *</label>
+                <input v-model="form.phone" type="tel" placeholder="Your contact number" required>
               </div>
               <div class="form-group">
-                <label>Phone Number</label>
-                <input v-model="form.phone" type="tel" placeholder="Your contact number">
+                <label>Email Address </label>
+                <input v-model="form.email" type="email" placeholder="your.email@example.com">
               </div>
               <div class="form-group">
                 <label>Service Interested In *</label>
@@ -414,11 +414,11 @@ const scrollToAbout = () => {
 
 const submitForm = async () => {
   try {
-    const response = await axios.post('/contact-form', form.value);
+    const response = await axios.post('/api/contacts', form.value);
     form.value = {
       name: '',
-      email: '',
       phone: '',
+      email: '',
       service: '',
       message: ''
     };

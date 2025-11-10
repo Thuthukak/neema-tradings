@@ -38,6 +38,8 @@ Route::prefix('admin')->group(function () {
         Route::prefix('api')->group(function () {
             Route::get('/get/profile-data', [ProfileController::class, 'profileData'])->name('profile.data');
             Route::get('/profile/data', [ProfileController::class, 'show'])->name('profile.data');
+
+            
         });
 });
 
@@ -54,7 +56,7 @@ Route::prefix('admin')->group(function () {
         
     });
 
-    Route::post('/contact-form', [ContactController::class, 'contactForm'])->name('contact.form');
+    // Route::post('/contact-form', [ContactController::class, 'contactForm'])->name('contact.form');
     Route::get('/faq', [HomeController::class, 'FaqIndex'])->name('faq.index');
     Route::get('/about-us', [HomeController::class, 'AboutUsIndex'])->name('about-us.index');
     Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
@@ -64,6 +66,16 @@ Route::prefix('admin')->group(function () {
 
 // API Routes (Public API)
 Route::prefix('api')->group(function () {
+
+    //contacts
+
+    Route::get('/contacts', [ContactController::class, 'index']);
+    Route::get('/contacts/{id}', [ContactController::class, 'show']);
+    Route::post('/contacts', [ContactController::class, 'contactForm']);
+    Route::put('/contacts/{id}', [ContactController::class, 'update']);
+    Route::delete('/contacts/{id}', [ContactController::class, 'destroy']);
+
+
      Route::get('/profile/data', [ProfileController::class, 'show'])->name('profile.data');
 
     Route::get('/services', [ServicesController::class, 'index'])->name('getServices');

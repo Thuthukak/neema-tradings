@@ -29,7 +29,10 @@ import { faBars,
         faMailForward,
         faEnvelope,
         faPaintBrush,
-        faFileInvoiceDollar
+        faFileInvoiceDollar,
+        faPencil,
+        faTrashAlt,
+
     } from "@fortawesome/free-solid-svg-icons";
 
 import { 
@@ -63,6 +66,8 @@ library.add(faBars,
             faMailForward,
             faPaperPlane,
             faPaintBrush,
+            faPencil,
+            faTrashAlt
             
         );
 
