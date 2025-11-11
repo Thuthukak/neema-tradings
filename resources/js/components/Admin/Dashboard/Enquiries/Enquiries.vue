@@ -103,38 +103,33 @@
       <!-- Desktop table -->
       <div class="d-none d-md-block">
         <div class="table-responsive rounded shadow">
-          <table class="table table-hover border">
+          <table class="table table-hover border table-fixed">
           <thead class="table-light">
             <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>Service</th>
-              <th>Message</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th class="text-end">Actions</th>
+              <th style="width: 140px;">Name</th>
+              <th style="width: 120px;">Phone</th>
+              <th style="width: 180px;">Email</th>
+              <th style="width: 140px;">Service</th>
+              <th >Status</th>
+              <th >Date</th>
+              <th class="actions-column">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="enquiry in enquiries" :key="enquiry.id" class="align-middle">
-              <td>{{ enquiry.name }}</td>
+              <td class="text-truncate" :title="enquiry.name">{{ enquiry.name }}</td>
               <td>
                 <button 
-                  class="btn btn-link text-decoration-none p-0" 
+                  class="btn btn-link text-decoration-none p-0 text-truncate d-block" 
                   @click="openPhoneModal(enquiry.phone)"
                   type="button"
+                  style="max-width: 100%;"
                 >
                   {{ enquiry.phone }}
                 </button>
               </td>
-              <td>{{ enquiry.email || 'N/A' }}</td>
-              <td>{{ formatService(enquiry.service) }}</td>
-              <td>
-                <span class="d-inline-block text-truncate" style="max-width: 200px;" :title="enquiry.message">
-                  {{ enquiry.message }}
-                </span>
-              </td>
+              <td class="text-truncate" :title="enquiry.email || 'N/A'">{{ enquiry.email || 'N/A' }}</td>
+              <td class="" :title="formatService(enquiry.service)">{{ formatService(enquiry.service) }}</td>
               <td>
                 <span 
                   class="badge" 
@@ -143,29 +138,34 @@
                   {{ formatStatus(enquiry.status) }}
                 </span>
               </td>
-              <td>{{ formatDate(enquiry.created_at) }}</td>
-              <td class="text-end">
-                <button 
-                  class="btn btn-sm btn-outline-secondary me-2" 
-                  @click="openViewModal(enquiry)"
-                  type="button"
-                >
-                  <font-awesome-icon :icon="['fas', 'eye']" />
-                </button>
-                <button 
-                  class="btn btn-sm btn-outline-secondary me-2" 
-                  @click="openEditModal(enquiry)"
-                  type="button"
-                >
-                  <font-awesome-icon :icon="['fas', 'pencil']" />
-                </button>
-                <button 
-                  class="btn btn-sm btn-outline-danger" 
-                  @click="confirmDelete(enquiry.id)"
-                  type="button"
-                >
-                  <font-awesome-icon :icon="['fas', 'trash']" />
-                </button>
+              <td class="text-nowrap small">{{ formatDate(enquiry.created_at) }}</td>
+              <td class="actions-column">
+                <div class="d-flex gap-1 justify-content-end flex-nowrap">
+                  <button 
+                    class="btn btn-sm btn-outline-secondary" 
+                    @click="openViewModal(enquiry)"
+                    type="button"
+                    title="View"
+                  >
+                    <font-awesome-icon :icon="['fas', 'eye']" />
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-secondary" 
+                    @click="openEditModal(enquiry)"
+                    type="button"
+                    title="Edit"
+                  >
+                    <font-awesome-icon :icon="['fas', 'pencil']" />
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-danger" 
+                    @click="confirmDelete(enquiry.id)"
+                    type="button"
+                    title="Delete"
+                  >
+                    <font-awesome-icon :icon="['fas', 'trash']" />
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -203,7 +203,7 @@
             <p class="card-text mb-3"><small class="text-muted">{{ formatDate(enquiry.created_at) }}</small></p>
             <div class="d-flex gap-2">
               <button class="btn btn-sm btn-outline-primary" @click="openViewModal(enquiry)" type="button">
-                <i class="bi bi-pencil"></i> View
+                <i class="bi bi-eye"></i> View
               </button>
               <button class="btn btn-sm btn-outline-secondary" @click="openEditModal(enquiry)" type="button">
                 <i class="bi bi-pencil"></i> Edit
@@ -244,52 +244,43 @@
       </div>
     </div>
 
-    <!-- Phone Modal -->
-    <div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="phoneModalLabel">Contact Options</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center">
-            <h4 class="mb-4">{{ selectedPhone }}</h4>
-            <div class="d-grid gap-2">
-              <button class="btn btn-success btn-lg" @click="openWhatsApp" type="button">
-                <i class="bi bi-whatsapp me-2"></i> Open in WhatsApp
-              </button>
-              <button class="btn btn-outline-primary btn-lg" @click="copyPhone" type="button">
-                <i class="bi bi-clipboard me-2"></i> Copy Number
-              </button>
-            </div>
-            <div v-if="copied" class="alert alert-success mt-3 mb-0">
-              <i class="bi bi-check-circle me-2"></i> Phone number copied!
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Modals -->
+    <PhoneContactModal 
+      :show="showPhoneModal"
+      :phone-number="selectedPhone"
+      @close="closePhoneModal"
+    />
 
-    <!-- Enquiry Create/Edit Modal -->
+    <EnquiryViewModal 
+      :show="showViewModal"
+      :enquiry="currentViewEnquiry"
+      @close="closeViewModal"
+      @edit="handleEditFromView"
+      @open-phone-modal="openPhoneModal"
+    />
+
     <EnquiryCreateEditModal 
-        :show="showEnquiryModal"
-        :is-editing="isEditingEnquiry"
-        :enquiry-data="currentEnquiryData"
-        @close="closeModal"
-        @submit="handleEnquirySubmit"
+      :show="showEnquiryModal"
+      :is-editing="isEditingEnquiry"
+      :enquiry-data="currentEnquiryData"
+      @close="closeModal"
+      @submit="handleEnquirySubmit"
     />
 
   </div>
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
 import EnquiryCreateEditModal from './EnquiryCreateEditModal.vue';
+import PhoneContactModal from './PhoneContactModal.vue';
+import EnquiryViewModal from './EnquiryViewModal.vue';
 
 export default {
   name: 'EnquiriesManagement',
   components: {
-    EnquiryCreateEditModal
+    EnquiryCreateEditModal,
+    PhoneContactModal,
+    EnquiryViewModal
   },
   data() {
     return {
@@ -303,8 +294,9 @@ export default {
       paginationData: null,
       searchTimeout: null,
       selectedPhone: '',
-      phoneModal: null,
-      copied: false,
+      showPhoneModal: false,
+      showViewModal: false,
+      currentViewEnquiry: null,
       showEnquiryModal: false,
       isEditingEnquiry: false,
       currentEnquiryData: null
@@ -312,17 +304,8 @@ export default {
   },
   mounted() {
     this.fetchEnquiries();
-    // Initialize Bootstrap modal
-    const phoneModalEl = document.getElementById('phoneModal');
-    if (phoneModalEl) {
-      this.phoneModal = new Modal(phoneModalEl);
-    }
   },
   beforeUnmount() {
-    // Clean up modal instance
-    if (this.phoneModal) {
-      this.phoneModal.dispose();
-    }
     // Clear any pending timeouts
     if (this.searchTimeout) {
       clearTimeout(this.searchTimeout);
@@ -381,58 +364,37 @@ export default {
         clearTimeout(this.searchTimeout);
       }
       this.searchTimeout = setTimeout(() => {
-        this.fetchEnquiries(1); // Reset to page 1 on new search
+        this.fetchEnquiries(1);
       }, 500);
     },
     goToPage(page) {
       if (page >= 1 && this.paginationData && page <= this.paginationData.last_page) {
         this.fetchEnquiries(page);
-        // Scroll to top of table
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     },
     openPhoneModal(phone) {
       this.selectedPhone = phone;
-      this.copied = false;
-      if (this.phoneModal) {
-        this.phoneModal.show();
-      }
+      this.showPhoneModal = true;
     },
-    openWhatsApp() {
-      const cleanPhone = this.selectedPhone.replace(/\D/g, '');
-      window.open(`https://wa.me/${cleanPhone}`, '_blank');
-      // Close modal after opening WhatsApp
-      if (this.phoneModal) {
-        this.phoneModal.hide();
-      }
+    closePhoneModal() {
+      this.showPhoneModal = false;
     },
-    async copyPhone() {
-      try {
-        await navigator.clipboard.writeText(this.selectedPhone);
-        this.copied = true;
-        setTimeout(() => {
-          this.copied = false;
-        }, 3000);
-      } catch (error) {
-        console.error('Failed to copy:', error);
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = this.selectedPhone;
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-          document.execCommand('copy');
-          this.copied = true;
-          setTimeout(() => {
-            this.copied = false;
-          }, 3000);
-        } catch (err) {
-          alert('Failed to copy phone number. Please copy manually: ' + this.selectedPhone);
-        }
-        document.body.removeChild(textArea);
-      }
+    openViewModal(enquiry) {
+      this.currentViewEnquiry = JSON.parse(JSON.stringify(enquiry));
+      this.showViewModal = true;
+    },
+    closeViewModal() {
+      this.showViewModal = false;
+      setTimeout(() => {
+        this.currentViewEnquiry = null;
+      }, 300);
+    },
+    handleEditFromView(enquiry) {
+      this.closeViewModal();
+      setTimeout(() => {
+        this.openEditModal(enquiry);
+      }, 300);
     },
     openAddModal() {
       this.isEditingEnquiry = false;
@@ -441,29 +403,24 @@ export default {
     },
     openEditModal(enquiry) {
       this.isEditingEnquiry = true;
-      // Create a deep copy to avoid mutating the original
       this.currentEnquiryData = JSON.parse(JSON.stringify(enquiry));
       this.showEnquiryModal = true;
     },
     closeModal() {
       this.showEnquiryModal = false;
-      // Small delay before clearing to allow modal animation
       setTimeout(() => {
         this.isEditingEnquiry = false;
         this.currentEnquiryData = null;
       }, 300);
     },
     handleEnquirySubmit(response) {
-      // Refresh the list after successful submission
       const currentPage = this.paginationData?.current_page || 1;
       this.fetchEnquiries(currentPage);
       
-      // Show success message
       const action = this.isEditingEnquiry ? 'updated' : 'created';
       this.showSuccessMessage(`Enquiry ${action} successfully!`);
     },
     showSuccessMessage(message) {
-      // Simple alert for now - you can replace with a toast notification
       alert(message);
     },
     confirmDelete(id) {
@@ -487,15 +444,12 @@ export default {
           throw new Error(errorData.message || 'Failed to delete enquiry');
         }
         
-        // Check if we need to go to previous page (if this was the last item on current page)
         const currentPage = this.paginationData.current_page;
         const itemsOnPage = this.enquiries.length;
         
         if (itemsOnPage === 1 && currentPage > 1) {
-          // Last item on non-first page, go to previous page
           this.fetchEnquiries(currentPage - 1);
         } else {
-          // Refresh current page
           this.fetchEnquiries(currentPage);
         }
         
@@ -508,13 +462,16 @@ export default {
     formatDate(date) {
       if (!date) return 'N/A';
       try {
-        return new Date(date).toLocaleDateString('en-ZA', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
+        const dateObj = new Date(date);
+        const day = dateObj.getDate();
+        const month = dateObj.toLocaleDateString('en-ZA', { month: 'short' });
+        const year = dateObj.getFullYear().toString().slice(-2);
+        const time = dateObj.toLocaleTimeString('en-ZA', { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false 
         });
+        return `${day} ${month} ${year} ${time}`;
       } catch (error) {
         console.error('Error formatting date:', error);
         return 'Invalid date';
@@ -557,7 +514,39 @@ export default {
   text-decoration: underline !important;
 }
 
-/* Ensure table is readable on all screen sizes */
+/* Make table cells truncate text */
+.text-truncate {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Sticky actions column */
+.actions-column {
+  position: sticky;
+  right: 0;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
+  min-width: 130px;
+  text-align: right;
+  z-index: 1;
+}
+
+.table-light .actions-column {
+  background-color: #f8f9fa;
+}
+
+.table-hover tbody tr:hover .actions-column {
+  background-color: #f5f5f5;
+}
+
+/* Ensure responsive table allows horizontal scroll */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (max-width: 768px) {
   .table-responsive {
     font-size: 0.875rem;

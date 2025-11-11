@@ -1,12 +1,12 @@
 <template>
     <teleport to="body">
-        <div v-if="show" class="modal-backdrop" @click="$emit('close')">
+        <div v-if="show" class="modal-backdrop" @click="handleBackdropClick">
             <div class="modal-container" @click.stop>
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content bg-white">
                         <div class="modal-header">
                             <h5 class="modal-title">{{ isEditing ? 'Edit Enquiry' : 'Add New Enquiry' }}</h5>
-                            <button type="button" class="btn-close" @click="$emit('close')"></button>
+                            <button type="button" class="btn-close" @click="handleClose"></button>
                         </div>
                         <div class="modal-body">
                             <div v-if="errorMessages.length" class="alert alert-danger">
@@ -93,7 +93,7 @@
                                     ></textarea>
                                 </div>
                                 <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
-                                    <button type="button" class="btn btn-secondary" @click="$emit('close')">Cancel</button>
+                                    <button type="button" class="btn btn-secondary" @click="handleClose">Cancel</button>
                                     <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
                                         <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
                                         {{ isEditing ? 'Update' : 'Add' }} Enquiry
@@ -125,6 +125,7 @@ export default {
             default: null
         }
     },
+    emits: ['close', 'submit'],
     data() {
         return {
             form: {
@@ -158,6 +159,12 @@ export default {
         }
     },
     methods: {
+        handleClose() {
+            this.$emit('close');
+        },
+        handleBackdropClick() {
+            this.$emit('close');
+        },
         resetForm() {
             this.form = {
                 name: '',
@@ -197,7 +204,8 @@ export default {
                     method: method,
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content || ''
                     },
                     body: JSON.stringify(this.form)
                 });
@@ -214,9 +222,11 @@ export default {
                     return;
                 }
 
-                // Emit success event
+                // Emit success event with data
                 this.$emit('submit', data);
+                // Close modal after successful submission
                 this.$emit('close');
+                // Reset form
                 this.resetForm();
             } catch (error) {
                 console.error('Error submitting form:', error);
