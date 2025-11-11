@@ -93,13 +93,18 @@ export default {
         {
           path: '/admin/enquiries',
           label: 'Enquiries',
-          icon: ['fas', 'clipboard-list' ],
+          icon: ['fas', 'clipboard-list'],
         },
         {
-          path: '/admin/settings',
-          label: 'Settings',
-          icon: ['fas', 'cog'],
+          path: '/admin/users',
+          label: 'Users',
+          icon: ['fas', 'user-cog'],
         },
+        // {
+        //   path: '/admin/settings',
+        //   label: 'Settings',
+        //   icon: ['fas', 'cog'],
+        // },
         // {
         //   path: '/admin/dashboard',
         //   label: 'Dashboard',

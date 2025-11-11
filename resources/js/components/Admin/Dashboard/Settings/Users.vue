@@ -1,170 +1,137 @@
 <template>
   <div>
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-lg font-medium text-gray-900">Users Management</h2>
-      <button
-        @click="showInviteModal = true"
-        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-      >
-        Invite User
-      </button>
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h2 class="text-lg font-medium text-gray-900">Users Management</h2>
+        <p class="mt-2 text-sm text-gray-700">
+          Invite new users to your application. They will receive an email with a
+          link to complete their registration.
+        </p>
+      </div>
+      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <button
+          @click="showInviteModal = true"
+          type="button"
+          class="inline-flex items-center justify-center rounded bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Invite User
+        </button>
+      </div>
     </div>
 
-    <!-- Users Table -->
-    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Name
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Email
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Role
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Status
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr v-for="user in users" :key="user.id">
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              {{ user.name || 'Pending' }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              {{ user.email }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              {{ user.role }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span
-                :class="[
-                  'px-2 inline-flex text-xs leading-5 font-semibold rounded-full',
-                  user.status === 'active'
-                    ? 'bg-green-100 text-green-800'
-                    : user.status === 'pending'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-gray-100 text-gray-800'
-                ]"
-              >
-                {{ user.status }}
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              <button
-                v-if="user.status === 'pending'"
-                @click="resendInvite(user.id)"
-                class="text-blue-600 hover:text-blue-900 mr-4"
-              >
-                Resend Invite
-              </button>
-              <button
-                @click="deleteUser(user.id)"
-                class="text-red-600 hover:text-red-900"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr v-if="users.length === 0">
-            <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
-              No users found. Click "Invite User" to add users.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Pending Invitations -->
+    <div class="mt-8">
+      <h3 class="text-base font-medium text-gray-900">Pending Invitations</h3>
+      <div class="mt-4 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
+                Email
+              </th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                Invited By
+              </th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                Expires
+              </th>
+              <th class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <span class="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr v-if="loading">
+              <td colspan="4" class="py-4 text-center text-sm text-gray-500">
+                Loading...
+              </td>
+            </tr>
+            <tr v-else-if="invitations.length === 0">
+              <td colspan="4" class="py-4 text-center text-sm text-gray-500">
+                No pending invitations
+              </td>
+            </tr>
+            <tr v-else v-for="invitation in invitations" :key="invitation.id">
+              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
+                {{ invitation.email }}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {{ invitation.inviter.name }}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {{ formatDate(invitation.expires_at) }}
+              </td>
+              <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                <button
+                  @click="cancelInvitation(invitation)"
+                  class="text-red-600 hover:text-red-900"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Invite User Modal -->
+    <teleport to="body">
     <div
       v-if="showInviteModal"
-      class="fixed z-10 inset-0 overflow-y-auto"
+      class="relative z-10"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
     >
-      <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div
-          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-          aria-hidden="true"
-          @click="closeInviteModal"
-        ></div>
-
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-        <div
-          class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-        >
-          <form @submit.prevent="sendInvite">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <div class="sm:flex sm:items-start">
-                <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                  <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                    Invite New User
-                  </h3>
-                  <div class="mt-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      v-model="inviteForm.email"
-                      required
-                      class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                      placeholder="user@example.com"
-                    />
-                  </div>
-                  <div class="mt-4">
-                    <label for="role" class="block text-sm font-medium text-gray-700">
-                      Role
-                    </label>
-                    <select
-                      id="role"
-                      v-model="inviteForm.role"
-                      required
-                      class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  </div>
-                  <div v-if="inviteError" class="mt-4 text-sm text-red-600">
-                    {{ inviteError }}
-                  </div>
-                  <div v-if="inviteSuccess" class="mt-4 text-sm text-green-600">
-                    {{ inviteSuccess }}
-                  </div>
+      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+            <div>
+              <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">
+                Invite New User
+              </h3>
+              <form @submit.prevent="sendInvitation" class="mt-4">
+                <div>
+                  <label for="email" class="block text-sm font-medium text-gray-700">
+                    Email Address
+                  </label>
+                  <input
+                    v-model="inviteForm.email"
+                    type="email"
+                    id="email"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    :class="{ 'border-red-300': inviteForm.errors.email }"
+                  />
+                  <p v-if="inviteForm.errors.email" class="mt-2 text-sm text-red-600">
+                    {{ inviteForm.errors.email }}
+                  </p>
                 </div>
-              </div>
+                <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                  <button
+                    type="submit"
+                    :disabled="inviteForm.processing"
+                    class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2 disabled:opacity-50"
+                  >
+                    {{ inviteForm.processing ? 'Sending...' : 'Send Invitation' }}
+                  </button>
+                  <button
+                    type="button"
+                    @click="closeInviteModal"
+                    class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
             </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-              <button
-                type="submit"
-                :disabled="isSubmitting"
-                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50"
-              >
-                {{ isSubmitting ? 'Sending...' : 'Send Invite' }}
-              </button>
-              <button
-                type="button"
-                @click="closeInviteModal"
-                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
+    </teleport>
   </div>
 </template>
 
@@ -172,77 +139,81 @@
 import axios from 'axios';
 
 export default {
-  name: 'Users',
+  name: "Users",
   data() {
     return {
-      users: [],
+      invitations: [],
+      loading: false,
       showInviteModal: false,
       inviteForm: {
         email: '',
-        role: 'user',
+        processing: false,
+        errors: {},
       },
-      inviteError: '',
-      inviteSuccess: '',
-      isSubmitting: false,
     };
   },
   mounted() {
-    this.fetchUsers();
+    this.fetchInvitations();
   },
   methods: {
-    async fetchUsers() {
+    async fetchInvitations() {
+      this.loading = true;
       try {
-        const response = await axios.get('/api/admin/users');
-        this.users = response.data;
+        const response = await axios.get('/api/invitations');
+        this.invitations = response.data;
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching invitations:', error);
+      } finally {
+        this.loading = false;
       }
     },
-    async sendInvite() {
-      this.inviteError = '';
-      this.inviteSuccess = '';
-      this.isSubmitting = true;
+    async sendInvitation() {
+      this.inviteForm.processing = true;
+      this.inviteForm.errors = {};
 
       try {
-        await axios.post('/api/admin/users/invite', this.inviteForm);
-        this.inviteSuccess = 'Invitation sent successfully!';
-        this.inviteForm.email = '';
-        this.inviteForm.role = 'user';
+        const response = await axios.post('/api/invitations', {
+          email: this.inviteForm.email,
+        });
         
-        setTimeout(() => {
-          this.closeInviteModal();
-          this.fetchUsers();
-        }, 1500);
+        this.invitations.unshift(response.data.invitation);
+        this.closeInviteModal();
+        alert('Invitation sent successfully!');
       } catch (error) {
-        this.inviteError = error.response?.data?.message || 'Failed to send invitation';
-      } finally {
-        this.isSubmitting = false;
-      }
-    },
-    async resendInvite(userId) {
-      try {
-        await axios.post(`/api/admin/users/${userId}/resend-invite`);
-        alert('Invitation resent successfully!');
-      } catch (error) {
-        alert('Failed to resend invitation');
-      }
-    },
-    async deleteUser(userId) {
-      if (confirm('Are you sure you want to delete this user?')) {
-        try {
-          await axios.delete(`/api/admin/users/${userId}`);
-          this.fetchUsers();
-        } catch (error) {
-          alert('Failed to delete user');
+        if (error.response?.status === 422) {
+          this.inviteForm.errors = error.response.data.errors;
+        } else {
+          alert('Failed to send invitation. Please try again.');
         }
+      } finally {
+        this.inviteForm.processing = false;
+      }
+    },
+    async cancelInvitation(invitation) {
+      if (!confirm(`Are you sure you want to cancel the invitation for ${invitation.email}?`)) {
+        return;
+      }
+
+      try {
+        await axios.delete(`/api/invitations/${invitation.id}`);
+        this.invitations = this.invitations.filter(i => i.id !== invitation.id);
+      } catch (error) {
+        alert('Failed to cancel invitation. Please try again.');
       }
     },
     closeInviteModal() {
       this.showInviteModal = false;
       this.inviteForm.email = '';
-      this.inviteForm.role = 'user';
-      this.inviteError = '';
-      this.inviteSuccess = '';
+      this.inviteForm.errors = {};
+    },
+    formatDate(date) {
+      return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
     },
   },
 };

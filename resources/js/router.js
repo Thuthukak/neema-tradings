@@ -6,6 +6,7 @@ import Settings from './components/Admin/Dashboard/Settings/Settings.vue';
 import Services from './components/Admin/Dashboard/Services/Services.vue';
 import Invoice from './components/Admin/Dashboard/Invoices/Invoice.vue';
 import Enquiries from './components/Admin/Dashboard/Enquiries/Enquiries.vue';
+import Users from './components/Admin/Dashboard/Settings/Users.vue';
 
 
 const routes = [
@@ -16,6 +17,7 @@ const routes = [
     { path: '/admin/settings', component: Settings },
     { path: '/admin/services', component: Services },
     { path: '/admin/invoices', component: Invoice },
+    { path: '/admin/users', component: Users },
     
 
 ];

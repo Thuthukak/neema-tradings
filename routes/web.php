@@ -14,6 +14,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\InvitationController;
 use Inertia\Inertia;
 
 
@@ -34,6 +35,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/profile/picture', [ProfileController::class, 'uploadPicture']);
         Route::delete('/profile/picture', [ProfileController::class, 'removePicture']);
         Route::delete('/profile', [ProfileController::class, 'destroy']);
+
+        
     });
         Route::prefix('api')->group(function () {
             Route::get('/get/profile-data', [ProfileController::class, 'profileData'])->name('profile.data');
@@ -61,6 +64,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/about-us', [HomeController::class, 'AboutUsIndex'])->name('about-us.index');
     Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
     Route::get('/contact-us', [HomeController::class, 'ContactIndex'])->name('contact.index');
+
+    Route::get('/accept-invitation/{token}', [InvitationController::class, 'show'])
+    ->name('invitation.show');
+
+    Route::post('/accept-invitation/{token}', [InvitationController::class, 'accept'])
+    ->name('invitation.accept');
    
 
 
@@ -115,6 +124,17 @@ Route::prefix('api')->group(function () {
     Route::get('/invoices/clients/list', [InvoiceController::class, 'getClients']); 
 
     Route::get('/invoices/profile/data', [ProfileController::class, 'show'])->name('profile.data');
+
+    // Invitations
+
+    Route::get('/invitations', [InvitationController::class, 'index'])
+        ->name('invitations.index');
+    
+    Route::post('/invitations', [InvitationController::class, 'store'])
+        ->name('invitations.store');
+    
+    Route::delete('/invitations/{invitation}', [InvitationController::class, 'destroy'])
+        ->name('invitations.destroy');
 
     
 });
