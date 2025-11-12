@@ -91,6 +91,11 @@ export default {
     return {
       navigationItems: [
         {
+          path: '/admin/dashboard',
+          label: 'Dashboard',
+          icon: ['fas', 'home'],
+        },
+        {
           path: '/admin/enquiries',
           label: 'Enquiries',
           icon: ['fas', 'clipboard-list'],
@@ -104,11 +109,6 @@ export default {
         //   path: '/admin/settings',
         //   label: 'Settings',
         //   icon: ['fas', 'cog'],
-        // },
-        // {
-        //   path: '/admin/dashboard',
-        //   label: 'Dashboard',
-        //   icon: ['fas', 'home'],
         // },
         // {
         //   path: '/admin/quotations',

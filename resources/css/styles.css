@@ -4,3 +4,9 @@ brand primary variable and brand secondary variable */
   --brand-secondary: #9d9a6f;
 }
 /* General styles */
+.bg-neema-primary {
+  background-color: #303032;
+}
+.bg-neema-secondary {
+  background-color: #9d9a6f;
+}

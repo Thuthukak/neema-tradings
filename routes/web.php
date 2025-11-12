@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\UserController;
 use Inertia\Inertia;
 
 
@@ -76,8 +77,13 @@ Route::prefix('admin')->group(function () {
 // API Routes (Public API)
 Route::prefix('api')->group(function () {
 
-    //contacts
+    // Dashboard
+    Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
+    Route::get('/dashboard/recent-enquiries', [DashboardController::class, 'getRecentEnquiries']);
+    Route::get('/dashboard/data', [DashboardController::class, 'getDashboardData']);
+    Route::get('/dashboard/trends', [DashboardController::class, 'getTrends']);
 
+    //contacts
     Route::get('/contacts', [ContactController::class, 'index']);
     Route::get('/contacts/{id}', [ContactController::class, 'show']);
     Route::post('/contacts', [ContactController::class, 'contactForm']);
@@ -135,6 +141,10 @@ Route::prefix('api')->group(function () {
     
     Route::delete('/invitations/{invitation}', [InvitationController::class, 'destroy'])
         ->name('invitations.destroy');
+
+    // Users
+    Route::get('/users', [UserController::class, 'index']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
     
 });

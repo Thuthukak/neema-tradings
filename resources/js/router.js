@@ -10,14 +10,14 @@ import Users from './components/Admin/Dashboard/Settings/Users.vue';
 
 
 const routes = [
-    { path: '/admin/dashboard', component: Dashboard },
-    { path: '/admin/enquiries', component: Enquiries },
+    { path: '/admin/dashboard', name: 'dashboard', component: Dashboard },
+    { path: '/admin/enquiries', name: 'enquiries', component: Enquiries },
     { path: '/admin/quotations', component: Quotations },
     { path: '/admin/profile', component: Profile },
     { path: '/admin/settings', component: Settings },
     { path: '/admin/services', component: Services },
     { path: '/admin/invoices', component: Invoice },
-    { path: '/admin/users', component: Users },
+    { path: '/admin/users', name: 'user-management', component: Users },
     
 
 ];

@@ -4,7 +4,7 @@
       <div class="sm:flex-auto">
         <h2 class="text-lg font-medium text-gray-900">Users Management</h2>
         <p class="mt-2 text-sm text-gray-700">
-          Invite new users to your application. They will receive an email with a
+          Invite new users to manage your application. They will receive an email with a
           link to complete their registration.
         </p>
       </div>
@@ -12,7 +12,7 @@
         <button
           @click="showInviteModal = true"
           type="button"
-          class="inline-flex items-center justify-center rounded bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          class="inline-flex items-center justify-center rounded bg-neema-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neema-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Invite User
         </button>
@@ -75,85 +75,97 @@
       </div>
     </div>
 
-    <!-- Invite User Modal -->
-    <teleport to="body">
-    <div
-      v-if="showInviteModal"
-      class="relative z-10"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-      <div class="fixed inset-0 z-10 overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-            <div>
-              <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">
-                Invite New User
-              </h3>
-              <form @submit.prevent="sendInvitation" class="mt-4">
-                <div>
-                  <label for="email" class="block text-sm font-medium text-gray-700">
-                    Email Address
-                  </label>
-                  <input
-                    v-model="inviteForm.email"
-                    type="email"
-                    id="email"
-                    required
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    :class="{ 'border-red-300': inviteForm.errors.email }"
-                  />
-                  <p v-if="inviteForm.errors.email" class="mt-2 text-sm text-red-600">
-                    {{ inviteForm.errors.email }}
-                  </p>
-                </div>
-                <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                  <button
-                    type="submit"
-                    :disabled="inviteForm.processing"
-                    class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2 disabled:opacity-50"
-                  >
-                    {{ inviteForm.processing ? 'Sending...' : 'Send Invitation' }}
-                  </button>
-                  <button
-                    type="button"
-                    @click="closeInviteModal"
-                    class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+    <!-- Active Users -->
+    <div class="mt-8">
+      <h3 class="text-base font-medium text-gray-900">Active Users</h3>
+      <div class="mt-4 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
+                Name
+              </th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                Email
+              </th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                Joined
+              </th>
+              <th class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <span class="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr v-if="loadingUsers">
+              <td colspan="4" class="py-4 text-center text-sm text-gray-500">
+                Loading...
+              </td>
+            </tr>
+            <tr v-else-if="users.length === 0">
+              <td colspan="4" class="py-4 text-center text-sm text-gray-500">
+                No users found
+              </td>
+            </tr>
+            <tr v-else v-for="user in users" :key="user.id">
+              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
+                {{ user.name }}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {{ user.email }}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {{ formatDate(user.created_at) }}
+              </td>
+              <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                <button
+                  @click="deleteUser(user)"
+                  class="text-red-600 hover:text-red-900"
+                  :disabled="user.is_current_user"
+                  :class="{ 'opacity-50 cursor-not-allowed': user.is_current_user }"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    </teleport>
+
+    <!-- Invite User Modal -->
+    <InviteUserModal
+      :show="showInviteModal"
+      :is-submitting="isSubmitting"
+      @close="closeInviteModal"
+      @submit="sendInvitation"
+      ref="inviteModal"
+    />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import InviteUserModal from './InviteUserModal.vue';
 
 export default {
   name: "Users",
+  components: {
+    InviteUserModal
+  },
   data() {
     return {
       invitations: [],
+      users: [],
       loading: false,
+      loadingUsers: false,
       showInviteModal: false,
-      inviteForm: {
-        email: '',
-        processing: false,
-        errors: {},
-      },
+      isSubmitting: false
     };
   },
   mounted() {
     this.fetchInvitations();
+    this.fetchUsers();
   },
   methods: {
     async fetchInvitations() {
@@ -167,13 +179,23 @@ export default {
         this.loading = false;
       }
     },
-    async sendInvitation() {
-      this.inviteForm.processing = true;
-      this.inviteForm.errors = {};
+    async fetchUsers() {
+      this.loadingUsers = true;
+      try {
+        const response = await axios.get('/api/users');
+        this.users = response.data;
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+        this.loadingUsers = false;
+      }
+    },
+    async sendInvitation(formData) {
+      this.isSubmitting = true;
 
       try {
         const response = await axios.post('/api/invitations', {
-          email: this.inviteForm.email,
+          email: formData.email,
         });
         
         this.invitations.unshift(response.data.invitation);
@@ -181,12 +203,13 @@ export default {
         alert('Invitation sent successfully!');
       } catch (error) {
         if (error.response?.status === 422) {
-          this.inviteForm.errors = error.response.data.errors;
+          // Pass server validation errors to the modal
+          this.$refs.inviteModal.setErrors(error.response.data.errors);
         } else {
           alert('Failed to send invitation. Please try again.');
         }
       } finally {
-        this.inviteForm.processing = false;
+        this.isSubmitting = false;
       }
     },
     async cancelInvitation(invitation) {
@@ -201,10 +224,26 @@ export default {
         alert('Failed to cancel invitation. Please try again.');
       }
     },
+    async deleteUser(user) {
+      if (user.is_current_user) {
+        alert('You cannot delete your own account.');
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete ${user.name}? This action cannot be undone.`)) {
+        return;
+      }
+
+      try {
+        await axios.delete(`/api/users/${user.id}`);
+        this.users = this.users.filter(u => u.id !== user.id);
+        alert('User deleted successfully!');
+      } catch (error) {
+        alert('Failed to delete user. Please try again.');
+      }
+    },
     closeInviteModal() {
       this.showInviteModal = false;
-      this.inviteForm.email = '';
-      this.inviteForm.errors = {};
     },
     formatDate(date) {
       return new Date(date).toLocaleDateString('en-US', {
