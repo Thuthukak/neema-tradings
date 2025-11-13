@@ -117,8 +117,8 @@
             </div>
             <h3>Central Supplier Database</h3>
             <ul class="service-list">
-              <li><strong>CSD Registration</strong> - R400</li>
-              <li><strong>CSD Optimization & Audit</strong> - R350</li>
+              <li><strong>CSD Registration</strong><strong style="color: #9d9a6f;"> - R400 </strong></li>
+              <li><strong>CSD Optimization & Audit</strong><strong style="color: #9d9a6f;"> - R350</strong></li>
             </ul>
             <p class="service-description">
               Get registered on the government's Central Supplier Database and ensure your profile is optimized for maximum visibility and compliance.
@@ -163,8 +163,55 @@
             </p>
           </div>
 
-          <div class="service-card highlighted">
+          
+          <div class="service-card">
             <div class="service-number">05</div>
+            <div class="service-icon">
+              <font-awesome-icon :icon="['fas', 'user-cog']" />
+            </div>
+            <h3>Office Tender Administrator Training</h3>
+            <div class="service-price">R6,000</div>
+            <p class="service-subtitle">For 2-6 employees</p>
+            <p class="service-description">
+              Professional training program for your team to master tender administration, document management, and compliance procedures.
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-number">06</div>
+            <div class="service-icon">
+              <font-awesome-icon :icon="['fas', 'redo']" />
+            </div>
+            <h3>Company Reinstatement</h3>
+            <div class="service-price">R1,200</div>
+            <p class="service-description">
+              Restore your deregistered company to good standing with CIPC, including all necessary documentation and filing.
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-number">07</div>
+            <div class="service-icon">
+              <font-awesome-icon :icon="['fas', 'id-card']" />
+            </div>
+            <h3>Company Profile</h3>
+            <div class="service-price">R900</div>
+            <p class="service-description">
+              Professional company profile document showcasing your business credentials, capabilities, and track record for tender submissions.
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-number">08</div>
+            <div class="service-icon">
+              <font-awesome-icon :icon="['fas', 'key']" />
+            </div>
+            <h3>Tax PIN</h3>
+            <div class="service-price">R350</div>
+            <p class="service-description">
+              Quick and hassle-free tax PIN registration for your business with SARS for compliance and tender requirements.
+            </p>
+          </div>
+
+          <div class="service-card ">
+            <div class="service-number">09</div>
             <div class="service-icon">
               <font-awesome-icon :icon="['fas', 'graduation-cap']" />
             </div>
@@ -183,6 +230,7 @@
               Comprehensive training to help you confidently navigate the tender process and win more contracts.
             </p>
           </div>
+
         </div>
       </div>
     </section>
@@ -394,7 +442,7 @@ onMounted(() => {
 });
 
 const openWhatsApp = () => {
-  const phoneNumber = '27738114652'; // Neema Tradings WhatsApp number
+  const phoneNumber = '27794997916'; // Neema Tradings WhatsApp number
   const message = encodeURIComponent('Hello, I am interested in your services.');
   const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
   window.open(whatsappURL, '_blank');

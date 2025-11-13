@@ -71,6 +71,10 @@ import {
     faUserTie,
     faBriefcase,
     faStar,
+    faUserCog,
+    faRedo,
+    faIdCard,
+    faKey,
 
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -152,7 +156,11 @@ library.add(
     faTimes,
     faUserTie,
     faBriefcase,
-    faStar
+    faStar,
+    faUserCog,
+    faRedo,
+    faIdCard,
+    faKey,
 
 );
 

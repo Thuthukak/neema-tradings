@@ -89,7 +89,7 @@
               <a href="https://www.linkedin.com" class="social-link" aria-label="LinkedIn">
                 <font-awesome-icon :icon="['fab', 'linkedin-in']" />
               </a>
-              <a href="https://wa.me/27738114652" class="social-link" aria-label="WhatsApp">
+              <a href="https://wa.me/27794997916" class="social-link" aria-label="WhatsApp">
                 <font-awesome-icon :icon="['fab', 'whatsapp']" />
               </a>
             </div>
