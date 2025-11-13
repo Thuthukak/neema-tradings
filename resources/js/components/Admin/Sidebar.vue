@@ -1,5 +1,5 @@
 <template>
-  <aside class="bg-dark text-white h-full flex flex-col p-3 relative">
+  <aside class="bg-neema-primary text-white h-full flex flex-col p-3 relative">
 
     <!-- Logo Section -->
     <div class="flex items-center gap-3 mb-4">
@@ -24,7 +24,7 @@
       <li v-for="item in navigationItems" :key="item.path">
         <router-link 
           :to="item.path" 
-          class="flex items-center text-white p-2 rounded hover-effect group relative"
+          class="flex items-center text-white p-2 rounded neema-hover-effect group relative"
           :class="{ 'justify-center': collapsed }"
         >
           <font-awesome-icon :icon="item.icon" class="min-w-[20px]" />
@@ -49,7 +49,7 @@
     <div class="mt-auto">
       <button 
         @click="logout" 
-        class="flex items-center w-full text-white p-2 rounded hover-effect text-red-400 group relative"
+        class="flex items-center w-full text-white p-2 rounded neema-hover-effect text-red-400 group relative"
         :class="{ 'justify-center': collapsed }"
       >
         <font-awesome-icon :icon="['fas', 'sign-out-alt']" class="min-w-[20px]" />
@@ -157,7 +157,7 @@ export default {
 }
 
 .router-link-active {
-  background-color: rgba(59, 130, 246, 0.5);
+  background-color: rgba(161, 160, 90, 0.459);
 }
 
 /* Smooth transitions */

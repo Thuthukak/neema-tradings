@@ -10,3 +10,60 @@ brand primary variable and brand secondary variable */
 .bg-neema-secondary {
   background-color: #9d9a6f;
 }
+.text-neema-primary {
+  color: #303032;
+}
+.text-neema-secondary {
+  color: #9d9a6f;
+}
+.neema-hover-effect {
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+.neema-hover-effect:hover {
+  background-color: rgba(161, 160, 90, 0.459);
+  transform: translateX(2px);
+}
+.neema-btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none; /* Remove default button border */
+}
+.neema-btn-sm {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none; /* Remove default button border */
+}
+.neema-btn-primary {
+  background-color: #303032;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.neema-btn-outline-secondary {
+  background-color: transparent;
+  color: #9d9a6f;
+  border: 2px solid #9d9a6f;
+}
+.neema-btn-outline-secondary:hover {
+  background-color: #9d9a6f;
+  color: white;
+}
+.neema-btn-outline-primary {
+  background-color: transparent;
+  color: #9d9a6f;
+  border: 2px solid #9d9a6f;
+}
+.neema-btn-primary:hover {
+  background-color: #9d9a6f;
+}
+.neema-btn-secondary {
+  background-color: #9d9a6f;
+  color: white;
+}
+.neema-btn-secondary:hover {
+  background-color: #303032
+}

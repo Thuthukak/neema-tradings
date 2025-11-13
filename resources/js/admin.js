@@ -33,6 +33,7 @@ import { faBars,
         faPencil,
         faTrashAlt,
         faUserCog,
+        faEllipsisH,
 
     } from "@fortawesome/free-solid-svg-icons";
 
@@ -69,7 +70,8 @@ library.add(faBars,
             faPaperPlane,
             faPaintBrush,
             faPencil,
-            faTrashAlt
+            faTrashAlt,
+            faEllipsisH
             
         );
 

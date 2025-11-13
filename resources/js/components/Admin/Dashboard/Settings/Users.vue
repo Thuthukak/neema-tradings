@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h2 class="text-lg font-medium text-gray-900">Users Management</h2>
+        <h2 class="text-lg sm:text-xl font-medium text-gray-900">Users Management</h2>
         <p class="mt-2 text-sm text-gray-700">
           Invite new users to manage your application. They will receive an email with a
           link to complete their registration.
@@ -12,7 +12,7 @@
         <button
           @click="showInviteModal = true"
           type="button"
-          class="inline-flex items-center justify-center rounded bg-neema-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neema-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          class="neema-btn neema-btn-secondary w-full sm:w-auto inline-flex items-center justify-center px-3 py-2 text-sm font-semibold text-white"
         >
           Invite User
         </button>
@@ -22,7 +22,9 @@
     <!-- Pending Invitations -->
     <div class="mt-8">
       <h3 class="text-base font-medium text-gray-900">Pending Invitations</h3>
-      <div class="mt-4 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+      
+      <!-- Desktop Table View -->
+      <div class="mt-4 hidden sm:block overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
@@ -73,12 +75,53 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Mobile Card View -->
+      <div class="mt-4 sm:hidden">
+        <div v-if="loading" class="text-center py-8 text-sm text-gray-500">
+          Loading...
+        </div>
+        <div v-else-if="invitations.length === 0" class="text-center py-8 text-sm text-gray-500">
+          No pending invitations
+        </div>
+        <div v-else class="space-y-4">
+          <div
+            v-for="invitation in invitations"
+            :key="invitation.id"
+            class="bg-white shadow rounded-lg p-4 ring-1 ring-black ring-opacity-5"
+          >
+            <div class="flex justify-between items-start mb-2">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 break-all">
+                  {{ invitation.email }}
+                </p>
+                <p class="text-xs text-gray-500 mt-1">
+                  Invited by {{ invitation.inviter.name }}
+                </p>
+              </div>
+            </div>
+            <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-200">
+              <p class="text-xs text-gray-500">
+                Expires {{ formatDate(invitation.expires_at) }}
+              </p>
+              <button
+                @click="cancelInvitation(invitation)"
+                class="text-sm font-medium text-red-600 hover:text-red-900"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Active Users -->
     <div class="mt-8">
       <h3 class="text-base font-medium text-gray-900">Active Users</h3>
-      <div class="mt-4 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+      
+      <!-- Desktop Table View -->
+      <div class="mt-4 hidden sm:block overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
@@ -130,6 +173,47 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Mobile Card View -->
+      <div class="mt-4 sm:hidden">
+        <div v-if="loadingUsers" class="text-center py-8 text-sm text-gray-500">
+          Loading...
+        </div>
+        <div v-else-if="users.length === 0" class="text-center py-8 text-sm text-gray-500">
+          No users found
+        </div>
+        <div v-else class="space-y-4">
+          <div
+            v-for="user in users"
+            :key="user.id"
+            class="bg-white shadow rounded-lg p-4 ring-1 ring-black ring-opacity-5"
+          >
+            <div class="flex justify-between items-start mb-2">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900">
+                  {{ user.name }}
+                </p>
+                <p class="text-xs text-gray-500 mt-1 break-all">
+                  {{ user.email }}
+                </p>
+              </div>
+            </div>
+            <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-200">
+              <p class="text-xs text-gray-500">
+                Joined {{ formatDate(user.created_at) }}
+              </p>
+              <button
+                @click="deleteUser(user)"
+                class="text-sm font-medium text-red-600 hover:text-red-900"
+                :disabled="user.is_current_user"
+                :class="{ 'opacity-50 cursor-not-allowed': user.is_current_user }"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

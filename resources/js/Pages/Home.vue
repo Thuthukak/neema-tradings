@@ -32,9 +32,9 @@
       <div class="hero-container">
         <div class="hero-content">
           <h1 class="hero-title">
-            Your Reliably Idea
+            Neema Tradings
           </h1>
-          <p class="hero-subtitle">Empowering Your Business Growth</p>
+          <p class="hero-subtitle">Your Trusted Supply Solution</p>
           <p class="hero-description">
             At Neema Tradings, we provide comprehensive business solutions to help entrepreneurs and companies navigate compliance, secure funding opportunities, and build sustainable growth strategies.
           </p>
@@ -298,7 +298,7 @@
               </div>
               <div>
                 <h4>Email</h4>
-                <a href="mailto:nomiemotso@gmail.com">nomiemotso@gmail.com</a>
+                <a href="mailto:enquiries@neematradings.co.za">enquiries@neematradings.co.za</a>
               </div>
             </div>
             <div class="contact-item">
@@ -307,7 +307,7 @@
               </div>
               <div>
                 <h4>Phone</h4>
-                <p>Available upon request</p>
+                <p>+27 79 499 7916</p>
               </div>
             </div>
             <div class="contact-item">

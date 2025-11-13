@@ -9,10 +9,10 @@
             src="/assets/images/logo/neema-logo.png"
             alt="Neema Tradings Logo" 
             class="navbar-logo" />
-          <div class="brand-text">
+          <!-- <div class="brand-text">
             <span class="brand-name">Neema Tradings</span>
             <span class="brand-tagline">Your Reliably Idea</span>
-          </div>
+          </div> -->
         </a>
 
         <!-- Navigation Links -->

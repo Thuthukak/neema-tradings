@@ -23,14 +23,14 @@
       <div class="d-flex align-items-center gap-2 gap-md-3">
         
         <!-- Dark Mode Toggle -->
-        <button @click="toggleDarkMode" class="btn text-secondary p-2">
+        <!-- <button @click="toggleDarkMode" class="btn text-secondary p-2">
           <font-awesome-icon :icon="darkMode ? icons.faSun : icons.faMoon" />
-        </button>
+        </button> -->
 
         <!-- Language Switcher -->
-        <button @click="changeLocale" class="btn text-secondary p-2">
+        <!-- <button @click="changeLocale" class="btn text-secondary p-2">
           <font-awesome-icon :icon="icons.faGlobe" />
-        </button>
+        </button> -->
 
         <!-- Profile Dropdown -->
         <div class="position-relative">
@@ -75,7 +75,7 @@
                 <img 
                   :src="currentAvatar" 
                   alt="Profile" 
-                  class="rounded-circle me-2" 
+                  class="rounded-circle neema-color me-2" 
                   width="40" 
                   height="40"
                   @error="handleImageError"
@@ -254,7 +254,7 @@ export default {
           
           // Update default avatar with user's name
           if (!this.user.profile_picture && this.user.name) {
-            this.defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(this.user.name)}&background=6366f1&color=fff&size=100`;
+            this.defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(this.user.name)}&background=9d9a6f&color=fff&size=100`;
           }
           
           this.apiStatus = 'success';
@@ -393,4 +393,5 @@ export default {
   width: 1rem;
   height: 1rem;
 }
+
 </style>

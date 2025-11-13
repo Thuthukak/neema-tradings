@@ -75,37 +75,32 @@ export default {
           icon: ['fas', 'home'],
         },
         {
-          path: '/admin/QueueManagement',
-          label: 'Queue',
-          icon: ['fas', 'user-plus'],
+          path: '/admin/enquiries',
+          label: 'Enquiries',
+          icon: ['fas', 'clipboard-list'],
         },
         {
-          path: '/admin/bookings',
-          label: 'Bookings',
-          icon: ['fas', 'calendar-alt'],
-        },
-        {
-          path: '/admin/services',
-          label: 'Services',
-          icon: ['fas', 'cut'],
+          path: '/admin/users',
+          label: 'Users',
+          icon: ['fas', 'user-cog'],
         },
       ],
       moreItems: [
-        {
-          action: 'settings',
-          label: 'Settings',
-          icon: ['fas', 'cog'],
-        },
+        // {
+        //   action: 'settings',
+        //   label: 'Settings',
+        //   icon: ['fas', 'cog'],
+        // },
         {
           action: 'profile',
           label: 'Profile',
           icon: ['fas', 'user'],
         },
-        {
-          action: 'notifications',
-          label: 'Notifications',
-          icon: ['fas', 'bell'],
-        },
+        // {
+        //   action: 'notifications',
+        //   label: 'Notifications',
+        //   icon: ['fas', 'bell'],
+        // },
         {
           action: 'home',
           label: 'Go Home',
@@ -134,7 +129,7 @@ export default {
           console.log('View notifications');
           break;
         case 'home':
-          this.$router.push('/');
+          window.location.href = '/';
           break;
         case 'logout':
           this.logout();

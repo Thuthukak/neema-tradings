@@ -3,7 +3,7 @@
     <!-- Header with add button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2>Manage Enquiries</h2>
-      <button class="btn btn-primary" @click="openAddModal">
+      <button class="neema-btn neema-btn-secondary" @click="openAddModal">
         <i class="bi bi-plus-circle me-1"></i> Add Enquiry
       </button>
     </div>
@@ -226,7 +226,7 @@
       </div>
       <div class="col-md-5 text-end">
         <button 
-          class="btn btn-outline-primary btn-sm me-2" 
+          class="neema-btn neema-btn-sm neema-btn-outline-secondary me-2" 
           :disabled="paginationData.current_page === 1"
           @click="goToPage(paginationData.current_page - 1)"
           type="button"
@@ -234,7 +234,7 @@
           Previous
         </button>
         <button 
-          class="btn btn-outline-primary btn-sm" 
+          class="neema-btn neema-btn-sm neema-btn-outline-secondary" 
           :disabled="paginationData.current_page === paginationData.last_page"
           @click="goToPage(paginationData.current_page + 1)"
           type="button"

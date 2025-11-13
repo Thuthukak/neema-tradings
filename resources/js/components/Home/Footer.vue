@@ -12,7 +12,7 @@
                  alt="Neema Tradings Logo" 
                  class="footer-logo mb-3" 
             />
-            <h5 class="footer-tagline">Your Reliably Idea</h5>
+            <h5 class="footer-tagline">Your Trusted Supply Solution</h5>
             <p class="footer-description">
               Empowering businesses through comprehensive compliance solutions, tender training, and professional business support services.
             </p>
@@ -63,7 +63,7 @@
                 <font-awesome-icon :icon="['fas', 'phone']" />
               </div>
               <span>
-                <a href="tel:+27738114652">+27 73 811 4652</a>
+                <a href="tel:+277794997916">+27 79 499 7916</a>
               </span>
             </li>
             <li class="contact-item">
@@ -71,7 +71,7 @@
                 <font-awesome-icon :icon="['fas', 'envelope']" />
               </div>
               <span>
-                <a href="mailto:nomiemotso@gmail.com">nomiemotso@gmail.com</a>
+                <a href="mailto:enquiries@neematradings.co.za">enquiries@neematradings.co.za</a>
               </span>
             </li>
           </ul>

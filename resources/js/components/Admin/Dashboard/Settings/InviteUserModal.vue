@@ -37,7 +37,7 @@
                   <button
                     type="submit"
                     :disabled="isSubmitting"
-                    class="btn btn-primary"
+                    class="neema-btn neema-btn-secondary"
                   >
                     {{ isSubmitting ? 'Sending...' : 'Send Invitation' }}
                   </button>
@@ -46,7 +46,7 @@
                   <button
                     type="button"
                     @click="$emit('close')"
-                    class="btn btn-secondary"
+                    class="neema-btn neema-btn-primary"
                   >
                     Cancel
                   </button>
