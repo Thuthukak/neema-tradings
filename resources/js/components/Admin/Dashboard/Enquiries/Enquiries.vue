@@ -2,7 +2,7 @@
   <div class="container-fluid py-4">
     <!-- Header with add button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>Manage Enquiries</h2>
+      <h2 class="fw-bold">Manage Enquiries</h2>
       <button class="neema-btn neema-btn-secondary" @click="openAddModal">
         <i class="bi bi-plus-circle me-1"></i> Add Enquiry
       </button>
@@ -93,7 +93,7 @@
       <i class="bi bi-inbox display-4 text-muted"></i>
       <p class="lead mt-3">No enquiries found</p>
       <p class="text-muted" v-if="searchQuery || statusFilter">Try changing your search criteria</p>
-      <button v-else class="btn btn-outline-primary mt-2" @click="openAddModal">
+      <button v-else class="neema-btn neema-btn-outline-secondary mt-2" @click="openAddModal">
         Add your first enquiry
       </button>
     </div>

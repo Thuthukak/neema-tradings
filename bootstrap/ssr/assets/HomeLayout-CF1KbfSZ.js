@@ -1,9 +1,10 @@
-import { _ as _export_sfc, N as Navbar } from "./Navbar-Cbm9A3FB.js";
-import { F as Footer } from "./Footer-DX5y-tbw.js";
+import { N as Navbar } from "./Navbar-BABML2an.js";
+import { _ as _sfc_main$1 } from "./Footer-Dp8jMWVf.js";
 import { resolveComponent, mergeProps, useSSRContext } from "vue";
 import { ssrRenderAttrs, ssrRenderComponent, ssrRenderSlot } from "vue/server-renderer";
+import { _ as _export_sfc } from "./_plugin-vue_export-helper-1tPrXgE0.js";
 const _sfc_main = {
-  components: { Navbar, Footer },
+  components: { Navbar, Footer: _sfc_main$1 },
   props: {
     seo: Object
   }

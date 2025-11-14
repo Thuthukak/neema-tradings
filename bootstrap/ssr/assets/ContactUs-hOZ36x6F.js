@@ -1,8 +1,8 @@
 import { ref, reactive, onMounted, resolveComponent, withCtx, createVNode, toDisplayString, useSSRContext } from "vue";
 import { ssrRenderComponent, ssrInterpolate, ssrRenderAttr, ssrIncludeBooleanAttr, ssrRenderStyle } from "vue/server-renderer";
-import { _ as _export_sfc, N as Navbar } from "./Navbar-Cbm9A3FB.js";
-import { F as Footer } from "./Footer-DX5y-tbw.js";
-import "axios";
+import { N as Navbar } from "./Navbar-BABML2an.js";
+import { _ as _sfc_main$1 } from "./Footer-Dp8jMWVf.js";
+import { _ as _export_sfc } from "./_plugin-vue_export-helper-1tPrXgE0.js";
 const _sfc_main = {
   __name: "ContactUs",
   __ssrInlineRender: true,
@@ -190,7 +190,7 @@ const _sfc_main = {
         _push(`<!---->`);
       }
       _push(`</div></div><div class="container mx-auto px-4 py-12" data-v-6894cba3><div class="bg-white p-6 rounded-lg shadow-md" data-v-6894cba3><h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center" data-v-6894cba3>Find Us</h2><div class="h-64 bg-gray-200 rounded-md flex items-center justify-center overflow-hidden" data-v-6894cba3><div class="w-full h-full relative" data-v-6894cba3><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28675.459433962693!2d28.182524335456343!3d-26.052120488886704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956c9e7dd28a2d%3A0x23a8745861e3d627!2sBirch%20Acres%2C%20Kempton%20Park%2C%201618!5e0!3m2!1sen!2sza!4v1747170368580!5m2!1sen!2sza" style="${ssrRenderStyle({ "position": "absolute", "top": "0", "left": "0", "width": "100%", "height": "100%", "border-radius": "0.375rem" })}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" data-v-6894cba3></iframe></div></div></div></div></div>`);
-      _push(ssrRenderComponent(Footer, { seo: __props.seo }, null, _parent));
+      _push(ssrRenderComponent(_sfc_main$1, { seo: __props.seo }, null, _parent));
       _push(`</div><!--]-->`);
     };
   }

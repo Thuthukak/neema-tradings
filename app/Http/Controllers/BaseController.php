@@ -12,14 +12,14 @@ abstract class BaseController extends Controller
     protected function getBaseSeoData()
     {
         return [
-            'title' => 'Home | Creative Web Design, Branding & Digital Solutions',
-            'description' => 'Penda Graphics is a South African creative agency offering professional web design, development, branding, and digital marketing services to help businesses grow online.',
-            'keywords' => 'Penda Graphics, web design South Africa, website development, branding, graphic design, logo design, digital marketing, SEO, UI/UX, Laravel, Vue, e-commerce, identity design',
-            'og_title' => 'Penda Graphics | Elevate Your Brand with Design & Digital Excellence',
-            'og_description' => 'Penda Graphics is a South African creative agency offering professional web design, development, branding, and digital marketing services to help businesses grow online.',
-            'og_image' => asset('assets/images/logo/phs_logo_color_hor@2x.png'),
+            'title' => 'Neema Tradings - Your Trusted Supply Solution | Business Compliance & Growth Solutions',
+            'description' => 'Neema Tradings offers comprehensive business solutions including CSD registration, company registration, BBBEE certificates, tender training, and compliance services. Let us help you help your business.',
+            'keywords' => 'CSD registration, company registration South Africa, BBBEE certificates, tender training, beneficial ownership declaration, annual return filing, business compliance, Neema Tradings, Nomthandazo Nkosi',
+            'og_title' => 'Neema Tradings - Empowering Your Business Growth',
+            'og_description' => 'Professional business compliance and growth solutions. CSD registration, company setup, BBBEE certification, tender training, and more. Your Trusted Supply Solution partner.',
+            'og_image' => asset('assets/images/logo/neema-logo.png'),
             'og_type' => 'website',
-            'og_site_name' => 'Penda Graphics',
+            'og_site_name' => 'Neema Tradings',
             'og_url' => config('app.url'),
             'twitter_card' => 'summary_large_image',
             'canonical_url' => config('app.url'),

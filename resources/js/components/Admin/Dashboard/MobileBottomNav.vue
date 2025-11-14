@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-around items-center py-2 px-1 bg-dark text-white">
+  <nav class="flex justify-around items-center py-2 px-1 bg-neema-primary text-white">
     <router-link
       v-for="item in navigationItems"
       :key="item.path"
@@ -7,14 +7,14 @@
       class="flex flex-col items-center justify-center p-2 min-w-[60px] text-center transition-colors duration-200"
       :class="[
         'hover:text-blue-300',
-        $route.path === item.path ? 'text-blue-400' : 'text-gray-300'
+        $route.path === item.path ? 'neema-text-secondary' : 'text-white'
       ]"
-      active-class="text-blue-400"
+      active-class="neema-text-secondary"
     >
       <font-awesome-icon 
         :icon="item.icon" 
         class="text-lg mb-1"
-        :class="[$route.path === item.path ? 'text-blue-400' : 'text-gray-300']"
+        :class="[$route.path === item.path ? 'neema-text-secondary' : 'text-white']"
       />
       <span class="text-xs font-medium leading-tight">{{ item.label }}</span>
     </router-link>
@@ -142,7 +142,7 @@ export default {
     async logout() {
       try {
         await axios.post('/logout');
-        window.location.href = '/';
+        window.location.href = '/admin/auth';
       } catch (error) {
         console.error('Logout error:', error);
         window.location.href = '/';

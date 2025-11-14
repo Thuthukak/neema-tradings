@@ -14,11 +14,11 @@ class HomeController extends BaseController
 
         // Customize SEO data for Neema Tradings home page
         $seoData = $this->mergeSeoData([
-            'title' => 'Neema Tradings - Your Reliably Idea | Business Compliance & Growth Solutions',
+            'title' => 'Neema Tradings - Your Trusted Supply Solution | Business Compliance & Growth Solutions',
             'description' => 'Neema Tradings offers comprehensive business solutions including CSD registration, company registration, BBBEE certificates, tender training, and compliance services. Let us help you help your business.',
             'keywords' => 'CSD registration, company registration South Africa, BBBEE certificates, tender training, beneficial ownership declaration, annual return filing, business compliance, Neema Tradings, Nomthandazo Nkosi',
             'og_title' => 'Neema Tradings - Empowering Your Business Growth',
-            'og_description' => 'Professional business compliance and growth solutions. CSD registration, company setup, BBBEE certification, tender training, and more. Your reliably idea partner.',
+            'og_description' => 'Professional business compliance and growth solutions. CSD registration, company setup, BBBEE certification, tender training, and more. Your Trusted Supply Solution partner.',
         ]);
 
         // Services data for better SEO and structured data
@@ -61,7 +61,7 @@ class HomeController extends BaseController
             '@context' => 'https://schema.org',
             '@type' => 'ProfessionalService',
             'name' => 'Neema Tradings',
-            'alternateName' => 'Your Reliably Idea',
+            'alternateName' => 'Your Trusted Supply Solution',
             'description' => $seoData['description'],
             'url' => $seoData['og_url'],
             'logo' => $seoData['og_image'],
@@ -78,7 +78,7 @@ class HomeController extends BaseController
             'contactPoint' => [
                 '@type' => 'ContactPoint',
                 'contactType' => 'customer service',
-                'email' => 'nomiemotso@gmail.com',
+                'email' => 'enquiries@neematradings.co.za',
                 'availableLanguage' => ['English', 'Zulu'],
             ],
             'areaServed' => [
@@ -136,11 +136,11 @@ class HomeController extends BaseController
     public function AdminAuth () {
 
         $seoData = $this->mergeSeoData([
-            'title' => 'Admin Authentication - Penda Graphics',
-            'description' => 'Admin Authentication page for Penda Graphics',
-            'keywords' => 'Penda Graphics, Web Design, Graphic Design, Branding, E-commerce, Digital Marketing',
-            'og_title' => 'Admin Authentication | Penda Graphics',
-            'hero_image' => asset('assets/images/3436542.png'),
+            'title' => 'Admin Authentication - Neema Tradings',
+            'description' => 'Admin Authentication page for Neema Tradings',
+            'keywords' => 'admin login, admin authentication, Neema Tradings admin',
+            'og_title' => 'Admin Authentication | Neema Tradings',
+            'hero_image' => asset('assets/images/logo/neema-logo-badge.png'),
         ]);
 
         return Inertia::render('Admin', [
@@ -151,10 +151,10 @@ class HomeController extends BaseController
 
     public function FaqIndex () {
     $seoData = $this->mergeSeoData([
-        'title' => 'FAQ - Frequently Asked Questions About Our Web Design, Graphic Design, Branding, E-commerce, and Digital Marketing Services | Penda Graphics',
-        'description' => 'Get answers to common questions about web design, graphic design, branding, e-commerce solutions, and digital marketing services. Expert advice from Penda Graphics South Africa.',
+        'title' => 'FAQ - Frequently Asked Questions About Our Web Design, Graphic Design, Branding, E-commerce, and Digital Marketing Services | Neema Tradings',
+        'description' => 'Get answers to common questions about web design, graphic design, branding, e-commerce solutions, and digital marketing services. Expert advice from Neema Tradings South Africa.',
         'keywords' => 'FAQ, web design questions, graphic design FAQ, branding questions, e-commerce FAQ, digital marketing help, website design cost, logo design questions, South Africa web design',
-        'og_title' => 'Frequently Asked Questions | Penda Graphics Design Services',
+        'og_title' => 'Frequently Asked Questions | Neema Tradings Design Services',
         'og_description' => 'Find answers to your questions about our web design, branding, and digital marketing services. Get expert insights from South Africa\'s leading creative agency.',
         'canonical_url' => config('app.url') . '/faq',
     ]);
@@ -226,26 +226,26 @@ class HomeController extends BaseController
     $seoData = $this->mergeSeoData([
         // Basic SEO
         'title' => 'About Us | Digital Design & Development Agency',
-        'description' => 'Discover Penda Graphics\' journey from boutique design studio to comprehensive digital solutions provider. Specializing in web development, branding, graphic design, and digital marketing since 2019.',
-        'keywords' => 'about Penda Graphics, digital design agency, web development company, graphic design studio, branding experts, digital marketing agency, web applications, e-commerce solutions, UI/UX design, Laravel development, Vue.js, responsive web design, logo design, brand identity, Kempton Park, South Africa',
+        'description' => 'Discover Neema Tradings\' journey from boutique design studio to comprehensive digital solutions provider. Specializing in web development, branding, graphic design, and digital marketing since 2019.',
+        'keywords' => 'about Neema Tradings, digital design agency, web development company, graphic design studio, branding experts, digital marketing agency, web applications, e-commerce solutions, UI/UX design, Laravel development, Vue.js, responsive web design, logo design, brand identity, Kempton Park, South Africa',
         'canonical_url' => url('/about-us'),
         
         // Open Graph (Facebook, LinkedIn, etc.)
-        'og_title' => 'About Penda Graphics - Digital Design & Development Experts',
+        'og_title' => 'About Neema Tradings - Digital Design & Development Experts',
         'og_description' => 'From boutique design studio to full-service digital agency. Transforming brands through innovative design and technology since 2019. Web development, branding, and digital marketing specialists.',
         'og_image' => asset('assets\images\penda_logo2.png'),
         'og_url' => url('/about-us'),
         'og_type' => 'website',
-        'og_site_name' => 'Penda Graphics',
+        'og_site_name' => 'Neema Tradings',
         
         // Twitter Card
         'twitter_card' => 'summary_large_image',
-        'twitter_title' => 'About Penda Graphics - Digital Design & Development Experts',
+        'twitter_title' => 'About Neema Tradings - Digital Design & Development Experts',
         'twitter_description' => 'From boutique design studio to full-service digital agency. Transforming brands through innovative design and technology since 2019.',
         'twitter_image' => asset('assets\images\painted_p_logo.png'),
         
         // Additional SEO data
-        'author' => 'Penda Graphics',
+        'author' => 'Neema Tradings',
         'robots' => 'index, follow',
         'revisit_after' => '7 days',
         'language' => 'en-US',
@@ -286,7 +286,7 @@ class HomeController extends BaseController
     $structuredData = [
         '@context' => 'https://schema.org',
         '@type' => 'Organization',
-        'name' => 'Penda Graphics',
+        'name' => 'Neema Tradings',
         'description' => 'Digital design and development agency specializing in web development, branding, graphic design, and digital marketing solutions.',
         'url' => url('/'),
         'logo' => asset('assets/images/penda-graphics-logo.png'),
@@ -432,16 +432,16 @@ class HomeController extends BaseController
     public function ContactIndex() {
     // Customize SEO data for contact page
     $seoData = $this->mergeSeoData([
-        'title' => 'Contact Us | Get in Touch with Penda Graphics',
-        'description' => 'Contact Penda Graphics for professional web design, branding, and digital marketing services in South Africa. Call +27 73 811 4652 or email info@pendagraphics.co.za for a free consultation.',
-        'keywords' => 'contact Penda Graphics, web design consultation, South Africa web design, Kempton Park web design, contact web designer, get quote web design, branding consultation, digital marketing contact',
-        'og_title' => 'Contact Penda Graphics | Professional Web Design & Branding Services',
+        'title' => 'Contact Us | Get in Touch with Neema Tradings',
+        'description' => 'Contact Neema Tradings for professional web design, branding, and digital marketing services in South Africa. Call +27 73 811 4652 or email info@pendagraphics.co.za for a free consultation.',
+        'keywords' => 'contact Neema Tradings, web design consultation, South Africa web design, Kempton Park web design, contact web designer, get quote web design, branding consultation, digital marketing contact',
+        'og_title' => 'Contact Neema Tradings | Professional Web Design & Branding Services',
         'og_description' => 'Ready to elevate your brand? Contact our expert team for web design, branding, and digital marketing services. Located in Kempton Park, serving all of South Africa.',
         'og_type' => 'website',
         'og_url' => url('/contact'),
         'canonical_url' => url('/contact'),
-        'twitter_title' => 'Contact Penda Graphics | Web Design & Digital Solutions',
-        'twitter_description' => 'Get in touch with Penda Graphics for professional web design, branding, and digital marketing services in South Africa.',
+        'twitter_title' => 'Contact Neema Tradings | Web Design & Digital Solutions',
+        'twitter_description' => 'Get in touch with Neema Tradings for professional web design, branding, and digital marketing services in South Africa.',
     ]);
 
     // Structured Data for SEO (separate from seoData for cleaner organization)
@@ -450,7 +450,7 @@ class HomeController extends BaseController
         '@type' => 'ContactPage',
         'mainEntity' => [
             '@type' => 'LocalBusiness',
-            'name' => 'Penda Graphics',
+            'name' => 'Neema Tradings',
             'description' => 'Professional web design, branding, and digital marketing services',
             'url' => config('app.url'),
             'telephone' => '+27738114652',

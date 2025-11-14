@@ -27,7 +27,7 @@
     </Head>
    
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section id="home" class="hero-section">
       <div class="hero-overlay"></div>
       <div class="hero-container">
         <div class="hero-content">
@@ -40,9 +40,9 @@
           </p>
           <div class="hero-buttons">
             <button class="btn-primary" @click="openWhatsApp">
-              <div class="d-flex justify-content-between align-items-center gap-2">
+              <div class="d-flex justify-content-center align-items-center gap-2">
               <font-awesome-icon :icon="['fab', 'whatsapp']" />
-              <div>Get Started</div>
+              <div class="text-center">Get Started</div>
               </div>
             </button>
             <button class="btn-secondary" @click="scrollToServices">Our Services</button>
@@ -392,6 +392,10 @@
                   <option value="company-registration">Company Registration</option>
                   <option value="beneficial-ownership">Beneficial Ownership Declaration</option>
                   <option value="annual-return">Company Annual Return Filing</option>
+                  <option value="tender-admin-training">Office Tender Administrator Training</option>
+                  <option value="company-reinstatement">Company Reinstatement</option>
+                  <option value="company-profile">Company Profile</option>
+                  <option value="tax-pin">Tax PIN</option>
                   <option value="tender-class">Tender/RFQ Masterclass</option>
                   <option value="consultation">General Consultation</option>
                 </select>

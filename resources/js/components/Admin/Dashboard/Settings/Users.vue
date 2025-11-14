@@ -1,8 +1,8 @@
 <template>
-  <div class="px-4 sm:px-6 lg:px-8">
+  <div class="">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h2 class="text-lg sm:text-xl font-medium text-gray-900">Users Management</h2>
+        <h2 class="text-lg sm:text-xl fw-bold text-gray-900">Users Management</h2>
         <p class="mt-2 text-sm text-gray-700">
           Invite new users to manage your application. They will receive an email with a
           link to complete their registration.
@@ -19,9 +19,11 @@
       </div>
     </div>
 
+    <hr>
+
     <!-- Pending Invitations -->
     <div class="mt-8">
-      <h3 class="text-base font-medium text-gray-900">Pending Invitations</h3>
+      <h3 class="text-base fw-bold text-gray-900">Pending Invitations</h3>
       
       <!-- Desktop Table View -->
       <div class="mt-4 hidden sm:block overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
@@ -116,9 +118,11 @@
       </div>
     </div>
 
+    <hr class="block sm:hidden">
+
     <!-- Active Users -->
     <div class="mt-8">
-      <h3 class="text-base font-medium text-gray-900">Active Users</h3>
+      <h3 class="text-base fw-bold text-gray-900">Active Users</h3>
       
       <!-- Desktop Table View -->
       <div class="mt-4 hidden sm:block overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">

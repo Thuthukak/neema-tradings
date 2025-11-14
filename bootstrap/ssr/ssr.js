@@ -1,239 +1,1395 @@
-import { ref, shallowRef, defineComponent, markRaw, h, onMounted, onUnmounted, computed, createSSRApp, reactive, watch } from "vue";
+import { ref, shallowRef, defineComponent, markRaw, h, computed, onMounted, onBeforeUnmount, onUnmounted, watch, Fragment, reactive, createSSRApp } from "vue";
 import { renderToString } from "@vue/server-renderer";
-import { createHeadManager, router, mergeDataIntoQueryString, shouldIntercept, setupProgress } from "@inertiajs/core";
-import { cloneDeep, isEqual } from "es-toolkit";
-import { has, set, get } from "es-toolkit/compat";
+import { createHeadManager, router, isUrlMethodPair, formDataToObject, getScrollableParent, useInfiniteScroll, config as config$1, mergeDataIntoQueryString, resetFormFields, shouldIntercept, shouldNavigate, setupProgress } from "@inertiajs/core";
+import { escape, cloneDeep, has, set, get, isEqual } from "lodash-es";
 import createServer from "@inertiajs/core/server";
-import { stringify, parse } from "qs";
+import { stringify, parse } from "qs-esm";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faBars, faMoon, faFileInvoiceDollar, faSun, faGlobe, faUser, faBell, faCog, faTrash, faEye, faFilePdf, faHome, faSignOutAlt, faClipboardList, faCalendarAlt, faSpinner, faEnvelope, faMailForward, faPaperPlane, faPaintBrush, faCheck, faLightbulb, faPalette, faDesktop, faSignature, faIdBadge, faPencilRuler, faLaptopCode, faCode, faShoppingCart, faBullhorn, faBoxOpen, faReceipt, faInbox, faCreditCard, faArrowsRotate, faUsers, faChartColumn, faHospital, faCircleCheck, faHandshake, faCloud, faChartLine, faPhone, faClock } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faInstagram, faYoutube, faTiktok } from "@fortawesome/free-brands-svg-icons";
-var G = { created() {
-  if (!this.$options.remember) return;
-  Array.isArray(this.$options.remember) && (this.$options.remember = { data: this.$options.remember }), typeof this.$options.remember == "string" && (this.$options.remember = { data: [this.$options.remember] }), typeof this.$options.remember.data == "string" && (this.$options.remember = { data: [this.$options.remember.data] });
-  let e2 = this.$options.remember.key instanceof Function ? this.$options.remember.key.call(this) : this.$options.remember.key, r = router.restore(e2), n2 = this.$options.remember.data.filter((o2) => !(this[o2] !== null && typeof this[o2] == "object" && this[o2].__rememberable === false)), s2 = (o2) => this[o2] !== null && typeof this[o2] == "object" && typeof this[o2].__remember == "function" && typeof this[o2].__restore == "function";
-  n2.forEach((o2) => {
-    this[o2] !== void 0 && r !== void 0 && r[o2] !== void 0 && (s2(o2) ? this[o2].__restore(r[o2]) : this[o2] = r[o2]), this.$watch(o2, () => {
-      router.remember(n2.reduce((a, l) => ({ ...a, [l]: cloneDeep(s2(l) ? this[l].__remember() : this[l]) }), {}), e2);
-    }, { immediate: true, deep: true });
-  });
-} }, V = G;
-function x(e2, r) {
-  let n2 = typeof e2 == "string" ? e2 : null, s2 = (typeof e2 == "string" ? r : e2) ?? {}, o2 = n2 ? router.restore(n2) : null, a = typeof s2 == "function" ? cloneDeep(s2()) : cloneDeep(s2), l = null, f = null, m = (t) => t, v = reactive({ ...o2 ? o2.data : cloneDeep(a), isDirty: false, errors: o2 ? o2.errors : {}, hasErrors: false, processing: false, progress: null, wasSuccessful: false, recentlySuccessful: false, data() {
-    return Object.keys(a).reduce((t, i2) => set(t, i2, get(this, i2)), {});
-  }, transform(t) {
-    return m = t, this;
-  }, defaults(t, i2) {
-    if (typeof s2 == "function") throw new Error("You cannot call `defaults()` when using a function to define your form data.");
-    return typeof t > "u" ? (a = cloneDeep(this.data()), this.isDirty = false) : a = typeof t == "string" ? set(cloneDeep(a), t, i2) : Object.assign({}, cloneDeep(a), t), this;
-  }, reset(...t) {
-    let i2 = typeof s2 == "function" ? cloneDeep(s2()) : cloneDeep(a), h2 = cloneDeep(i2);
-    return t.length === 0 ? (a = h2, Object.assign(this, i2)) : t.filter((p) => has(h2, p)).forEach((p) => {
-      set(a, p, get(h2, p)), set(this, p, get(i2, p));
-    }), this;
-  }, setError(t, i2) {
-    return Object.assign(this.errors, typeof t == "string" ? { [t]: i2 } : t), this.hasErrors = Object.keys(this.errors).length > 0, this;
-  }, clearErrors(...t) {
-    return this.errors = Object.keys(this.errors).reduce((i2, h2) => ({ ...i2, ...t.length > 0 && !t.includes(h2) ? { [h2]: this.errors[h2] } : {} }), {}), this.hasErrors = Object.keys(this.errors).length > 0, this;
-  }, submit(...t) {
-    let i2 = typeof t[0] == "object", h2 = i2 ? t[0].method : t[0], p = i2 ? t[0].url : t[1], u = (i2 ? t[1] : t[2]) ?? {}, F = m(this.data()), T = { ...u, onCancelToken: (c) => {
-      if (l = c, u.onCancelToken) return u.onCancelToken(c);
-    }, onBefore: (c) => {
-      if (this.wasSuccessful = false, this.recentlySuccessful = false, clearTimeout(f), u.onBefore) return u.onBefore(c);
-    }, onStart: (c) => {
-      if (this.processing = true, u.onStart) return u.onStart(c);
-    }, onProgress: (c) => {
-      if (this.progress = c, u.onProgress) return u.onProgress(c);
-    }, onSuccess: async (c) => {
-      this.processing = false, this.progress = null, this.clearErrors(), this.wasSuccessful = true, this.recentlySuccessful = true, f = setTimeout(() => this.recentlySuccessful = false, 2e3);
-      let w = u.onSuccess ? await u.onSuccess(c) : null;
-      return a = cloneDeep(this.data()), this.isDirty = false, w;
-    }, onError: (c) => {
-      if (this.processing = false, this.progress = null, this.clearErrors().setError(c), u.onError) return u.onError(c);
-    }, onCancel: () => {
-      if (this.processing = false, this.progress = null, u.onCancel) return u.onCancel();
-    }, onFinish: (c) => {
-      if (this.processing = false, this.progress = null, l = null, u.onFinish) return u.onFinish(c);
-    } };
-    h2 === "delete" ? router.delete(p, { ...T, data: F }) : router[h2](p, F, T);
-  }, get(t, i2) {
-    this.submit("get", t, i2);
-  }, post(t, i2) {
-    this.submit("post", t, i2);
-  }, put(t, i2) {
-    this.submit("put", t, i2);
-  }, patch(t, i2) {
-    this.submit("patch", t, i2);
-  }, delete(t, i2) {
-    this.submit("delete", t, i2);
-  }, cancel() {
-    l && l.cancel();
-  }, __rememberable: n2 === null, __remember() {
-    return { data: this.data(), errors: this.errors };
-  }, __restore(t) {
-    Object.assign(this, t.data), this.setError(t.errors);
-  } });
-  return watch(v, (t) => {
-    v.isDirty = !isEqual(v.data(), a), n2 && router.remember(cloneDeep(t.__remember()), n2);
-  }, { immediate: true, deep: true }), v;
-}
-var y = ref(null), d = ref(null), I = shallowRef(null), A = ref(null), E = null, ie = defineComponent({ name: "Inertia", props: { initialPage: { type: Object, required: true }, initialComponent: { type: Object, required: false }, resolveComponent: { type: Function, required: false }, titleCallback: { type: Function, required: false, default: (e2) => e2 }, onHeadUpdate: { type: Function, required: false, default: () => () => {
-} } }, setup({ initialPage: e2, initialComponent: r, resolveComponent: n2, titleCallback: s2, onHeadUpdate: o2 }) {
-  y.value = r ? markRaw(r) : null, d.value = e2, A.value = null;
-  let a = typeof window > "u";
-  return E = createHeadManager(a, s2, o2), a || (router.init({ initialPage: e2, resolveComponent: n2, swapComponent: async (l) => {
-    y.value = markRaw(l.component), d.value = l.page, A.value = l.preserveState ? A.value : Date.now();
-  } }), router.on("navigate", () => E.forceUpdate())), () => {
-    if (y.value) {
-      y.value.inheritAttrs = !!y.value.inheritAttrs;
-      let l = h(y.value, { ...d.value.props, key: A.value });
-      return I.value && (y.value.layout = I.value, I.value = null), y.value.layout ? typeof y.value.layout == "function" ? y.value.layout(h, l) : (Array.isArray(y.value.layout) ? y.value.layout : [y.value.layout]).concat(l).reverse().reduce((f, m) => (m.inheritAttrs = !!m.inheritAttrs, h(m, { ...d.value.props }, () => f))) : l;
+var remember = {
+  created() {
+    if (!this.$options.remember) {
+      return;
     }
-  };
-} }), B = ie, q = { install(e2) {
-  router.form = x, Object.defineProperty(e2.config.globalProperties, "$inertia", { get: () => router }), Object.defineProperty(e2.config.globalProperties, "$page", { get: () => d.value }), Object.defineProperty(e2.config.globalProperties, "$headManager", { get: () => E }), e2.mixin(V);
-} };
-async function K({ id: e2 = "app", resolve: r, setup: n2, title: s2, progress: o2 = {}, page: a, render: l }) {
-  let f = typeof window > "u", m = f ? null : document.getElementById(e2), v = a || JSON.parse(m.dataset.page), t = (p) => Promise.resolve(r(p)).then((u) => u.default || u), i2 = [], h$1 = await Promise.all([t(v.component), router.decryptHistory().catch(() => {
-  })]).then(([p]) => n2({ el: m, App: B, props: { initialPage: v, initialComponent: p, resolveComponent: t, titleCallback: s2, onHeadUpdate: f ? (u) => i2 = u : null }, plugin: q }));
-  if (!f && o2 && setupProgress(o2), f) {
-    let p = await l(createSSRApp({ render: () => h("div", { id: e2, "data-page": JSON.stringify(v), innerHTML: h$1 ? l(h$1) : "" }) }));
-    return { head: i2, body: p };
+    if (Array.isArray(this.$options.remember)) {
+      this.$options.remember = { data: this.$options.remember };
+    }
+    if (typeof this.$options.remember === "string") {
+      this.$options.remember = { data: [this.$options.remember] };
+    }
+    if (typeof this.$options.remember.data === "string") {
+      this.$options.remember = { data: [this.$options.remember.data] };
+    }
+    const rememberKey = this.$options.remember.key instanceof Function ? this.$options.remember.key.call(this) : this.$options.remember.key;
+    const restored = router.restore(rememberKey);
+    const rememberable = this.$options.remember.data.filter((key2) => {
+      return !(this[key2] !== null && typeof this[key2] === "object" && this[key2].__rememberable === false);
+    });
+    const hasCallbacks = (key2) => {
+      return this[key2] !== null && typeof this[key2] === "object" && typeof this[key2].__remember === "function" && typeof this[key2].__restore === "function";
+    };
+    rememberable.forEach((key2) => {
+      if (this[key2] !== void 0 && restored !== void 0 && restored[key2] !== void 0) {
+        hasCallbacks(key2) ? this[key2].__restore(restored[key2]) : this[key2] = restored[key2];
+      }
+      this.$watch(
+        key2,
+        () => {
+          router.remember(
+            rememberable.reduce(
+              (data, key3) => ({
+                ...data,
+                [key3]: cloneDeep(hasCallbacks(key3) ? this[key3].__remember() : this[key3])
+              }),
+              {}
+            ),
+            rememberKey
+          );
+        },
+        { immediate: true, deep: true }
+      );
+    });
+  }
+};
+var remember_default = remember;
+function useForm(rememberKeyOrData, maybeData) {
+  const rememberKey = typeof rememberKeyOrData === "string" ? rememberKeyOrData : null;
+  const data = (typeof rememberKeyOrData === "string" ? maybeData : rememberKeyOrData) ?? {};
+  const restored = rememberKey ? router.restore(rememberKey) : null;
+  let defaults = typeof data === "function" ? cloneDeep(data()) : cloneDeep(data);
+  let cancelToken = null;
+  let recentlySuccessfulTimeoutId;
+  let transform = (data2) => data2;
+  let defaultsCalledInOnSuccess = false;
+  const form = reactive({
+    ...restored ? restored.data : cloneDeep(defaults),
+    isDirty: false,
+    errors: restored ? restored.errors : {},
+    hasErrors: false,
+    processing: false,
+    progress: null,
+    wasSuccessful: false,
+    recentlySuccessful: false,
+    data() {
+      return Object.keys(defaults).reduce((carry, key2) => {
+        return set(carry, key2, get(this, key2));
+      }, {});
+    },
+    transform(callback) {
+      transform = callback;
+      return this;
+    },
+    defaults(fieldOrFields, maybeValue) {
+      if (typeof data === "function") {
+        throw new Error("You cannot call `defaults()` when using a function to define your form data.");
+      }
+      defaultsCalledInOnSuccess = true;
+      if (typeof fieldOrFields === "undefined") {
+        defaults = cloneDeep(this.data());
+        this.isDirty = false;
+      } else {
+        defaults = typeof fieldOrFields === "string" ? set(cloneDeep(defaults), fieldOrFields, maybeValue) : Object.assign({}, cloneDeep(defaults), fieldOrFields);
+      }
+      return this;
+    },
+    reset(...fields) {
+      const resolvedData = typeof data === "function" ? cloneDeep(data()) : cloneDeep(defaults);
+      const clonedData = cloneDeep(resolvedData);
+      if (fields.length === 0) {
+        defaults = clonedData;
+        Object.assign(this, resolvedData);
+      } else {
+        fields.filter((key2) => has(clonedData, key2)).forEach((key2) => {
+          set(defaults, key2, get(clonedData, key2));
+          set(this, key2, get(resolvedData, key2));
+        });
+      }
+      return this;
+    },
+    setError(fieldOrFields, maybeValue) {
+      Object.assign(this.errors, typeof fieldOrFields === "string" ? { [fieldOrFields]: maybeValue } : fieldOrFields);
+      this.hasErrors = Object.keys(this.errors).length > 0;
+      return this;
+    },
+    clearErrors(...fields) {
+      this.errors = Object.keys(this.errors).reduce(
+        (carry, field) => ({
+          ...carry,
+          ...fields.length > 0 && !fields.includes(field) ? { [field]: this.errors[field] } : {}
+        }),
+        {}
+      );
+      this.hasErrors = Object.keys(this.errors).length > 0;
+      return this;
+    },
+    resetAndClearErrors(...fields) {
+      this.reset(...fields);
+      this.clearErrors(...fields);
+      return this;
+    },
+    submit(...args) {
+      const objectPassed = args[0] !== null && typeof args[0] === "object";
+      const method = objectPassed ? args[0].method : args[0];
+      const url = objectPassed ? args[0].url : args[1];
+      const options = (objectPassed ? args[1] : args[2]) ?? {};
+      defaultsCalledInOnSuccess = false;
+      const _options = {
+        ...options,
+        onCancelToken: (token) => {
+          cancelToken = token;
+          if (options.onCancelToken) {
+            return options.onCancelToken(token);
+          }
+        },
+        onBefore: (visit) => {
+          this.wasSuccessful = false;
+          this.recentlySuccessful = false;
+          clearTimeout(recentlySuccessfulTimeoutId);
+          if (options.onBefore) {
+            return options.onBefore(visit);
+          }
+        },
+        onStart: (visit) => {
+          this.processing = true;
+          if (options.onStart) {
+            return options.onStart(visit);
+          }
+        },
+        onProgress: (event) => {
+          this.progress = event;
+          if (options.onProgress) {
+            return options.onProgress(event);
+          }
+        },
+        onSuccess: async (page2) => {
+          this.processing = false;
+          this.progress = null;
+          this.clearErrors();
+          this.wasSuccessful = true;
+          this.recentlySuccessful = true;
+          recentlySuccessfulTimeoutId = setTimeout(
+            () => this.recentlySuccessful = false,
+            config.get("form.recentlySuccessfulDuration")
+          );
+          const onSuccess = options.onSuccess ? await options.onSuccess(page2) : null;
+          if (!defaultsCalledInOnSuccess) {
+            defaults = cloneDeep(this.data());
+            this.isDirty = false;
+          }
+          return onSuccess;
+        },
+        onError: (errors) => {
+          this.processing = false;
+          this.progress = null;
+          this.clearErrors().setError(errors);
+          if (options.onError) {
+            return options.onError(errors);
+          }
+        },
+        onCancel: () => {
+          this.processing = false;
+          this.progress = null;
+          if (options.onCancel) {
+            return options.onCancel();
+          }
+        },
+        onFinish: (visit) => {
+          this.processing = false;
+          this.progress = null;
+          cancelToken = null;
+          if (options.onFinish) {
+            return options.onFinish(visit);
+          }
+        }
+      };
+      const transformedData = transform(this.data());
+      if (method === "delete") {
+        router.delete(url, { ..._options, data: transformedData });
+      } else {
+        router[method](url, transformedData, _options);
+      }
+    },
+    get(url, options) {
+      this.submit("get", url, options);
+    },
+    post(url, options) {
+      this.submit("post", url, options);
+    },
+    put(url, options) {
+      this.submit("put", url, options);
+    },
+    patch(url, options) {
+      this.submit("patch", url, options);
+    },
+    delete(url, options) {
+      this.submit("delete", url, options);
+    },
+    cancel() {
+      if (cancelToken) {
+        cancelToken.cancel();
+      }
+    },
+    __rememberable: rememberKey === null,
+    __remember() {
+      return { data: this.data(), errors: this.errors };
+    },
+    __restore(restored2) {
+      Object.assign(this, restored2.data);
+      this.setError(restored2.errors);
+    }
+  });
+  watch(
+    form,
+    (newValue) => {
+      form.isDirty = !isEqual(form.data(), defaults);
+      if (rememberKey) {
+        router.remember(cloneDeep(newValue.__remember()), rememberKey);
+      }
+    },
+    { immediate: true, deep: true }
+  );
+  return form;
+}
+var component = ref(void 0);
+var page = ref();
+var layout = shallowRef(null);
+var key = ref(void 0);
+var headManager;
+var App = defineComponent({
+  name: "Inertia",
+  props: {
+    initialPage: {
+      type: Object,
+      required: true
+    },
+    initialComponent: {
+      type: Object,
+      required: false
+    },
+    resolveComponent: {
+      type: Function,
+      required: false
+    },
+    titleCallback: {
+      type: Function,
+      required: false,
+      default: (title) => title
+    },
+    onHeadUpdate: {
+      type: Function,
+      required: false,
+      default: () => () => {
+      }
+    }
+  },
+  setup({ initialPage, initialComponent, resolveComponent, titleCallback, onHeadUpdate }) {
+    component.value = initialComponent ? markRaw(initialComponent) : void 0;
+    page.value = initialPage;
+    key.value = void 0;
+    const isServer = typeof window === "undefined";
+    headManager = createHeadManager(isServer, titleCallback || ((title) => title), onHeadUpdate || (() => {
+    }));
+    if (!isServer) {
+      router.init({
+        initialPage,
+        resolveComponent,
+        swapComponent: async (options) => {
+          component.value = markRaw(options.component);
+          page.value = options.page;
+          key.value = options.preserveState ? key.value : Date.now();
+        }
+      });
+      router.on("navigate", () => headManager.forceUpdate());
+    }
+    return () => {
+      if (component.value) {
+        component.value.inheritAttrs = !!component.value.inheritAttrs;
+        const child = h(component.value, {
+          ...page.value.props,
+          key: key.value
+        });
+        if (layout.value) {
+          component.value.layout = layout.value;
+          layout.value = null;
+        }
+        if (component.value.layout) {
+          if (typeof component.value.layout === "function") {
+            return component.value.layout(h, child);
+          }
+          return (Array.isArray(component.value.layout) ? component.value.layout : [component.value.layout]).concat(child).reverse().reduce((child2, layout2) => {
+            layout2.inheritAttrs = !!layout2.inheritAttrs;
+            return h(layout2, { ...page.value.props }, () => child2);
+          });
+        }
+        return child;
+      }
+    };
+  }
+});
+var app_default = App;
+var plugin = {
+  install(app) {
+    router.form = useForm;
+    Object.defineProperty(app.config.globalProperties, "$inertia", { get: () => router });
+    Object.defineProperty(app.config.globalProperties, "$page", { get: () => page.value });
+    Object.defineProperty(app.config.globalProperties, "$headManager", { get: () => headManager });
+    app.mixin(remember_default);
+  }
+};
+async function createInertiaApp({
+  id = "app",
+  resolve,
+  setup,
+  title,
+  progress: progress2 = {},
+  page: page2,
+  render,
+  defaults = {}
+}) {
+  config.replace(defaults);
+  const isServer = typeof window === "undefined";
+  const el = isServer ? null : document.getElementById(id);
+  const initialPage = page2 || JSON.parse((el == null ? void 0 : el.dataset.page) || "{}");
+  const resolveComponent = (name) => Promise.resolve(resolve(name)).then((module) => module.default || module);
+  let head = [];
+  const vueApp = await Promise.all([
+    resolveComponent(initialPage.component),
+    router.decryptHistory().catch(() => {
+    })
+  ]).then(([initialComponent]) => {
+    const props = {
+      initialPage,
+      initialComponent,
+      resolveComponent,
+      titleCallback: title
+    };
+    if (isServer) {
+      const ssrSetup = setup;
+      return ssrSetup({
+        el: null,
+        App: app_default,
+        props: { ...props, onHeadUpdate: (elements) => head = elements },
+        plugin
+      });
+    }
+    const csrSetup = setup;
+    return csrSetup({
+      el,
+      App: app_default,
+      props,
+      plugin
+    });
+  });
+  if (!isServer && progress2) {
+    setupProgress(progress2);
+  }
+  if (isServer && render) {
+    const body = await render(
+      createSSRApp({
+        render: () => h("div", {
+          id,
+          "data-page": JSON.stringify(initialPage),
+          innerHTML: vueApp ? render(vueApp) : ""
+        })
+      })
+    );
+    return { head, body };
   }
 }
-defineComponent({ name: "Deferred", props: { data: { type: [String, Array], required: true } }, render() {
-  let e2 = Array.isArray(this.$props.data) ? this.$props.data : [this.$props.data];
-  if (!this.$slots.fallback) throw new Error("`<Deferred>` requires a `<template #fallback>` slot");
-  return e2.every((r) => this.$page.props[r] !== void 0) ? this.$slots.default() : this.$slots.fallback();
-} });
-var he = defineComponent({ props: { title: { type: String, required: false } }, data() {
-  return { provider: this.$headManager.createProvider() };
-}, beforeUnmount() {
-  this.provider.disconnect();
-}, methods: { isUnaryTag(e2) {
-  return ["area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"].indexOf(e2.type) > -1;
-}, renderTagStart(e2) {
-  e2.props = e2.props || {}, e2.props.inertia = e2.props["head-key"] !== void 0 ? e2.props["head-key"] : "";
-  let r = Object.keys(e2.props).reduce((n2, s2) => {
-    let o2 = e2.props[s2];
-    return ["key", "head-key"].includes(s2) ? n2 : o2 === "" ? n2 + ` ${s2}` : n2 + ` ${s2}="${o2}"`;
-  }, "");
-  return `<${e2.type}${r}>`;
-}, renderTagChildren(e2) {
-  return typeof e2.children == "string" ? e2.children : e2.children.reduce((r, n2) => r + this.renderTag(n2), "");
-}, isFunctionNode(e2) {
-  return typeof e2.type == "function";
-}, isComponentNode(e2) {
-  return typeof e2.type == "object";
-}, isCommentNode(e2) {
-  return /(comment|cmt)/i.test(e2.type.toString());
-}, isFragmentNode(e2) {
-  return /(fragment|fgt|symbol\(\))/i.test(e2.type.toString());
-}, isTextNode(e2) {
-  return /(text|txt)/i.test(e2.type.toString());
-}, renderTag(e2) {
-  if (this.isTextNode(e2)) return e2.children;
-  if (this.isFragmentNode(e2)) return "";
-  if (this.isCommentNode(e2)) return "";
-  let r = this.renderTagStart(e2);
-  return e2.children && (r += this.renderTagChildren(e2)), this.isUnaryTag(e2) || (r += `</${e2.type}>`), r;
-}, addTitleElement(e2) {
-  return this.title && !e2.find((r) => r.startsWith("<title")) && e2.push(`<title inertia>${this.title}</title>`), e2;
-}, renderNodes(e2) {
-  return this.addTitleElement(e2.flatMap((r) => this.resolveNode(r)).map((r) => this.renderTag(r)).filter((r) => r));
-}, resolveNode(e2) {
-  return this.isFunctionNode(e2) ? this.resolveNode(e2.type()) : this.isComponentNode(e2) ? (console.warn("Using components in the <Head> component is not supported."), []) : this.isTextNode(e2) && e2.children ? e2 : this.isFragmentNode(e2) && e2.children ? e2.children.flatMap((r) => this.resolveNode(r)) : this.isCommentNode(e2) ? [] : e2;
-} }, render() {
-  this.provider.update(this.renderNodes(this.$slots.default ? this.$slots.default() : []));
-} }), ge = he;
-defineComponent({ name: "Link", props: { as: { type: String, default: "a" }, data: { type: Object, default: () => ({}) }, href: { type: [String, Object], required: true }, method: { type: String, default: "get" }, replace: { type: Boolean, default: false }, preserveScroll: { type: Boolean, default: false }, preserveState: { type: Boolean, default: null }, only: { type: Array, default: () => [] }, except: { type: Array, default: () => [] }, headers: { type: Object, default: () => ({}) }, queryStringArrayFormat: { type: String, default: "brackets" }, async: { type: Boolean, default: false }, prefetch: { type: [Boolean, String, Array], default: false }, cacheFor: { type: [Number, String, Array], default: 0 }, onStart: { type: Function, default: (e2) => {
-} }, onProgress: { type: Function, default: () => {
-} }, onFinish: { type: Function, default: () => {
-} }, onBefore: { type: Function, default: () => {
-} }, onCancel: { type: Function, default: () => {
-} }, onSuccess: { type: Function, default: () => {
-} }, onError: { type: Function, default: () => {
-} }, onCancelToken: { type: Function, default: () => {
-} } }, setup(e2, { slots: r, attrs: n2 }) {
-  let s2 = ref(0), o2 = ref(null), a = e2.prefetch === true ? ["hover"] : e2.prefetch === false ? [] : Array.isArray(e2.prefetch) ? e2.prefetch : [e2.prefetch], l = e2.cacheFor !== 0 ? e2.cacheFor : a.length === 1 && a[0] === "click" ? 0 : 3e4;
-  onMounted(() => {
-    a.includes("mount") && F();
-  }), onUnmounted(() => {
-    clearTimeout(o2.value);
-  });
-  let f = typeof e2.href == "object" ? e2.href.method : e2.method.toLowerCase(), m = f !== "get" ? "button" : e2.as.toLowerCase(), v = computed(() => mergeDataIntoQueryString(f, typeof e2.href == "object" ? e2.href.url : e2.href || "", e2.data, e2.queryStringArrayFormat)), t = computed(() => v.value[0]), i2 = computed(() => v.value[1]), h$1 = computed(() => ({ a: { href: t.value }, button: { type: "button" } })), p = { data: i2.value, method: f, replace: e2.replace, preserveScroll: e2.preserveScroll, preserveState: e2.preserveState ?? f !== "get", only: e2.only, except: e2.except, headers: e2.headers, async: e2.async }, u = { ...p, onCancelToken: e2.onCancelToken, onBefore: e2.onBefore, onStart: (g) => {
-    s2.value++, e2.onStart(g);
-  }, onProgress: e2.onProgress, onFinish: (g) => {
-    s2.value--, e2.onFinish(g);
-  }, onCancel: e2.onCancel, onSuccess: e2.onSuccess, onError: e2.onError }, F = () => {
-    router.prefetch(t.value, p, { cacheFor: l });
-  }, T = { onClick: (g) => {
-    shouldIntercept(g) && (g.preventDefault(), router.visit(t.value, u));
-  } }, c = { onMouseenter: () => {
-    o2.value = setTimeout(() => {
-      F();
-    }, 75);
-  }, onMouseleave: () => {
-    clearTimeout(o2.value);
-  }, onClick: T.onClick }, w = { onMousedown: (g) => {
-    shouldIntercept(g) && (g.preventDefault(), F());
-  }, onMouseup: (g) => {
-    g.preventDefault(), router.visit(t.value, u);
-  }, onClick: (g) => {
-    shouldIntercept(g) && g.preventDefault();
-  } };
-  return () => h(m, { ...n2, ...h$1.value[m] || {}, "data-loading": s2.value > 0 ? "" : void 0, ...a.includes("hover") ? c : a.includes("click") ? w : T }, r);
-} });
-defineComponent({ name: "WhenVisible", props: { data: { type: [String, Array] }, params: { type: Object }, buffer: { type: Number, default: 0 }, as: { type: String, default: "div" }, always: { type: Boolean, default: false } }, data() {
-  return { loaded: false, fetching: false, observer: null };
-}, unmounted() {
-  var _a;
-  (_a = this.observer) == null ? void 0 : _a.disconnect();
-}, mounted() {
-  this.observer = new IntersectionObserver((e2) => {
-    if (!e2[0].isIntersecting || (this.$props.always || this.observer.disconnect(), this.fetching)) return;
-    this.fetching = true;
-    let r = this.getReloadParams();
-    router.reload({ ...r, onStart: (n2) => {
+defineComponent({
+  name: "Deferred",
+  props: {
+    data: {
+      type: [String, Array],
+      required: true
+    }
+  },
+  render() {
+    var _a, _b;
+    const keys = Array.isArray(this.$props.data) ? this.$props.data : [this.$props.data];
+    if (!this.$slots.fallback) {
+      throw new Error("`<Deferred>` requires a `<template #fallback>` slot");
+    }
+    return keys.every((key2) => this.$page.props[key2] !== void 0) ? (_b = (_a = this.$slots).default) == null ? void 0 : _b.call(_a) : this.$slots.fallback();
+  }
+});
+var noop = () => void 0;
+defineComponent({
+  name: "Form",
+  slots: Object,
+  props: {
+    action: {
+      type: [String, Object],
+      default: ""
+    },
+    method: {
+      type: String,
+      default: "get"
+    },
+    headers: {
+      type: Object,
+      default: () => ({})
+    },
+    queryStringArrayFormat: {
+      type: String,
+      default: "brackets"
+    },
+    errorBag: {
+      type: [String, null],
+      default: null
+    },
+    showProgress: {
+      type: Boolean,
+      default: true
+    },
+    transform: {
+      type: Function,
+      default: (data) => data
+    },
+    options: {
+      type: Object,
+      default: () => ({})
+    },
+    resetOnError: {
+      type: [Boolean, Array],
+      default: false
+    },
+    resetOnSuccess: {
+      type: [Boolean, Array],
+      default: false
+    },
+    setDefaultsOnSuccess: {
+      type: Boolean,
+      default: false
+    },
+    onCancelToken: {
+      type: Function,
+      default: noop
+    },
+    onBefore: {
+      type: Function,
+      default: noop
+    },
+    onStart: {
+      type: Function,
+      default: noop
+    },
+    onProgress: {
+      type: Function,
+      default: noop
+    },
+    onFinish: {
+      type: Function,
+      default: noop
+    },
+    onCancel: {
+      type: Function,
+      default: noop
+    },
+    onSuccess: {
+      type: Function,
+      default: noop
+    },
+    onError: {
+      type: Function,
+      default: noop
+    },
+    onSubmitComplete: {
+      type: Function,
+      default: noop
+    },
+    disableWhileProcessing: {
+      type: Boolean,
+      default: false
+    },
+    invalidateCacheTags: {
+      type: [String, Array],
+      default: () => []
+    }
+  },
+  setup(props, { slots, attrs, expose }) {
+    const form = useForm({});
+    const formElement = ref();
+    const method = computed(
+      () => isUrlMethodPair(props.action) ? props.action.method : props.method.toLowerCase()
+    );
+    const isDirty = ref(false);
+    const defaultData = ref(new FormData());
+    const onFormUpdate = (event) => {
+      isDirty.value = event.type === "reset" ? false : !isEqual(getData(), formDataToObject(defaultData.value));
+    };
+    const formEvents = ["input", "change", "reset"];
+    onMounted(() => {
+      defaultData.value = getFormData();
+      formEvents.forEach((e) => formElement.value.addEventListener(e, onFormUpdate));
+    });
+    onBeforeUnmount(() => formEvents.forEach((e) => {
       var _a;
-      this.fetching = true, (_a = r.onStart) == null ? void 0 : _a.call(r, n2);
-    }, onFinish: (n2) => {
-      var _a;
-      this.loaded = true, this.fetching = false, (_a = r.onFinish) == null ? void 0 : _a.call(r, n2);
-    } });
-  }, { rootMargin: `${this.$props.buffer}px` }), this.observer.observe(this.$el.nextSibling);
-}, methods: { getReloadParams() {
-  if (this.$props.data) return { only: Array.isArray(this.$props.data) ? this.$props.data : [this.$props.data] };
-  if (!this.$props.params) throw new Error("You must provide either a `data` or `params` prop.");
-  return this.$props.params;
-} }, render() {
-  let e2 = [];
-  return (this.$props.always || !this.loaded) && e2.push(h(this.$props.as)), this.loaded ? this.$slots.default && e2.push(this.$slots.default()) : e2.push(this.$slots.fallback ? this.$slots.fallback() : null), e2;
-} });
+      return (_a = formElement.value) == null ? void 0 : _a.removeEventListener(e, onFormUpdate);
+    }));
+    const getFormData = () => new FormData(formElement.value);
+    const getData = () => formDataToObject(getFormData());
+    const submit = () => {
+      const [action, data] = mergeDataIntoQueryString(
+        method.value,
+        isUrlMethodPair(props.action) ? props.action.url : props.action,
+        getData(),
+        props.queryStringArrayFormat
+      );
+      const maybeReset = (resetOption) => {
+        if (!resetOption) {
+          return;
+        }
+        if (resetOption === true) {
+          reset();
+        } else if (resetOption.length > 0) {
+          reset(...resetOption);
+        }
+      };
+      const submitOptions = {
+        headers: props.headers,
+        errorBag: props.errorBag,
+        showProgress: props.showProgress,
+        invalidateCacheTags: props.invalidateCacheTags,
+        onCancelToken: props.onCancelToken,
+        onBefore: props.onBefore,
+        onStart: props.onStart,
+        onProgress: props.onProgress,
+        onFinish: props.onFinish,
+        onCancel: props.onCancel,
+        onSuccess: (...args) => {
+          var _a, _b;
+          (_a = props.onSuccess) == null ? void 0 : _a.call(props, ...args);
+          (_b = props.onSubmitComplete) == null ? void 0 : _b.call(props, exposed);
+          maybeReset(props.resetOnSuccess);
+          if (props.setDefaultsOnSuccess === true) {
+            defaults();
+          }
+        },
+        onError: (...args) => {
+          var _a;
+          (_a = props.onError) == null ? void 0 : _a.call(props, ...args);
+          maybeReset(props.resetOnError);
+        },
+        ...props.options
+      };
+      form.transform(() => props.transform(data)).submit(method.value, action, submitOptions);
+    };
+    const reset = (...fields) => {
+      resetFormFields(formElement.value, defaultData.value, fields);
+    };
+    const resetAndClearErrors = (...fields) => {
+      form.clearErrors(...fields);
+      reset(...fields);
+    };
+    const defaults = () => {
+      defaultData.value = getFormData();
+      isDirty.value = false;
+    };
+    const exposed = {
+      get errors() {
+        return form.errors;
+      },
+      get hasErrors() {
+        return form.hasErrors;
+      },
+      get processing() {
+        return form.processing;
+      },
+      get progress() {
+        return form.progress;
+      },
+      get wasSuccessful() {
+        return form.wasSuccessful;
+      },
+      get recentlySuccessful() {
+        return form.recentlySuccessful;
+      },
+      clearErrors: (...fields) => form.clearErrors(...fields),
+      resetAndClearErrors,
+      setError: (fieldOrFields, maybeValue) => form.setError(typeof fieldOrFields === "string" ? { [fieldOrFields]: maybeValue } : fieldOrFields),
+      get isDirty() {
+        return isDirty.value;
+      },
+      reset,
+      submit,
+      defaults,
+      getData,
+      getFormData
+    };
+    expose(exposed);
+    return () => {
+      return h(
+        "form",
+        {
+          ...attrs,
+          ref: formElement,
+          action: isUrlMethodPair(props.action) ? props.action.url : props.action,
+          method: method.value,
+          onSubmit: (event) => {
+            event.preventDefault();
+            submit();
+          },
+          inert: props.disableWhileProcessing && form.processing
+        },
+        slots.default ? slots.default(exposed) : []
+      );
+    };
+  }
+});
+var Head = defineComponent({
+  props: {
+    title: {
+      type: String,
+      required: false
+    }
+  },
+  data() {
+    return {
+      provider: this.$headManager.createProvider()
+    };
+  },
+  beforeUnmount() {
+    this.provider.disconnect();
+  },
+  methods: {
+    isUnaryTag(node) {
+      return typeof node.type === "string" && [
+        "area",
+        "base",
+        "br",
+        "col",
+        "embed",
+        "hr",
+        "img",
+        "input",
+        "keygen",
+        "link",
+        "meta",
+        "param",
+        "source",
+        "track",
+        "wbr"
+      ].indexOf(node.type) > -1;
+    },
+    renderTagStart(node) {
+      node.props = node.props || {};
+      node.props[this.provider.preferredAttribute()] = node.props["head-key"] !== void 0 ? node.props["head-key"] : "";
+      const attrs = Object.keys(node.props).reduce((carry, name) => {
+        const value = String(node.props[name]);
+        if (["key", "head-key"].includes(name)) {
+          return carry;
+        } else if (value === "") {
+          return carry + ` ${name}`;
+        } else {
+          return carry + ` ${name}="${escape(value)}"`;
+        }
+      }, "");
+      return `<${String(node.type)}${attrs}>`;
+    },
+    renderTagChildren(node) {
+      const { children } = node;
+      if (typeof children === "string") {
+        return children;
+      }
+      if (Array.isArray(children)) {
+        return children.reduce((html, child) => {
+          return html + this.renderTag(child);
+        }, "");
+      }
+      return "";
+    },
+    isFunctionNode(node) {
+      return typeof node.type === "function";
+    },
+    isComponentNode(node) {
+      return typeof node.type === "object";
+    },
+    isCommentNode(node) {
+      return /(comment|cmt)/i.test(node.type.toString());
+    },
+    isFragmentNode(node) {
+      return /(fragment|fgt|symbol\(\))/i.test(node.type.toString());
+    },
+    isTextNode(node) {
+      return /(text|txt)/i.test(node.type.toString());
+    },
+    renderTag(node) {
+      if (this.isTextNode(node)) {
+        return String(node.children);
+      } else if (this.isFragmentNode(node)) {
+        return "";
+      } else if (this.isCommentNode(node)) {
+        return "";
+      }
+      let html = this.renderTagStart(node);
+      if (node.children) {
+        html += this.renderTagChildren(node);
+      }
+      if (!this.isUnaryTag(node)) {
+        html += `</${String(node.type)}>`;
+      }
+      return html;
+    },
+    addTitleElement(elements) {
+      if (this.title && !elements.find((tag) => tag.startsWith("<title"))) {
+        elements.push(`<title ${this.provider.preferredAttribute()}>${this.title}</title>`);
+      }
+      return elements;
+    },
+    renderNodes(nodes) {
+      const elements = nodes.flatMap((node) => this.resolveNode(node)).map((node) => this.renderTag(node)).filter((node) => node);
+      return this.addTitleElement(elements);
+    },
+    resolveNode(node) {
+      if (this.isFunctionNode(node)) {
+        return this.resolveNode(node.type());
+      } else if (this.isComponentNode(node)) {
+        console.warn(`Using components in the <Head> component is not supported.`);
+        return [];
+      } else if (this.isTextNode(node) && node.children) {
+        return node;
+      } else if (this.isFragmentNode(node) && node.children) {
+        return node.children.flatMap((child) => this.resolveNode(child));
+      } else if (this.isCommentNode(node)) {
+        return [];
+      } else {
+        return node;
+      }
+    }
+  },
+  render() {
+    this.provider.update(this.renderNodes(this.$slots.default ? this.$slots.default() : []));
+  }
+});
+var head_default = Head;
+var resolveHTMLElement = (value, fallback) => {
+  if (!value) {
+    return fallback;
+  }
+  if (typeof value === "string") {
+    return document.querySelector(value);
+  }
+  if (typeof value === "function") {
+    return value() || null;
+  }
+  return fallback;
+};
+defineComponent({
+  name: "InfiniteScroll",
+  slots: Object,
+  props: {
+    data: {
+      type: String,
+      required: true
+    },
+    buffer: {
+      type: Number,
+      default: 0
+    },
+    onlyNext: {
+      type: Boolean,
+      default: false
+    },
+    onlyPrevious: {
+      type: Boolean,
+      default: false
+    },
+    as: {
+      type: String,
+      default: "div"
+    },
+    manual: {
+      type: Boolean,
+      default: false
+    },
+    manualAfter: {
+      type: Number,
+      default: 0
+    },
+    preserveUrl: {
+      type: Boolean,
+      default: false
+    },
+    reverse: {
+      type: Boolean,
+      default: false
+    },
+    autoScroll: {
+      type: Boolean,
+      default: void 0
+    },
+    itemsElement: {
+      type: [String, Function, Object],
+      default: null
+    },
+    startElement: {
+      type: [String, Function, Object],
+      default: null
+    },
+    endElement: {
+      type: [String, Function, Object],
+      default: null
+    }
+  },
+  inheritAttrs: false,
+  setup(props, { slots, attrs, expose }) {
+    const itemsElementRef = ref(null);
+    const startElementRef = ref(null);
+    const endElementRef = ref(null);
+    const itemsElement = computed(
+      () => resolveHTMLElement(props.itemsElement, itemsElementRef.value)
+    );
+    const scrollableParent = computed(() => getScrollableParent(itemsElement.value));
+    const startElement = computed(
+      () => resolveHTMLElement(props.startElement, startElementRef.value)
+    );
+    const endElement = computed(() => resolveHTMLElement(props.endElement, endElementRef.value));
+    const loadingPrevious = ref(false);
+    const loadingNext = ref(false);
+    const requestCount = ref(0);
+    const {
+      dataManager,
+      elementManager,
+      flush: flushInfiniteScroll
+    } = useInfiniteScroll({
+      // Data
+      getPropName: () => props.data,
+      inReverseMode: () => props.reverse,
+      shouldFetchNext: () => !props.onlyPrevious,
+      shouldFetchPrevious: () => !props.onlyNext,
+      shouldPreserveUrl: () => props.preserveUrl,
+      // Elements
+      getTriggerMargin: () => props.buffer,
+      getStartElement: () => startElement.value,
+      getEndElement: () => endElement.value,
+      getItemsElement: () => itemsElement.value,
+      getScrollableParent: () => scrollableParent.value,
+      // Request callbacks
+      onBeforePreviousRequest: () => loadingPrevious.value = true,
+      onBeforeNextRequest: () => loadingNext.value = true,
+      onCompletePreviousRequest: () => {
+        requestCount.value = dataManager.getRequestCount();
+        loadingPrevious.value = false;
+      },
+      onCompleteNextRequest: () => {
+        requestCount.value = dataManager.getRequestCount();
+        loadingNext.value = false;
+      }
+    });
+    requestCount.value = dataManager.getRequestCount();
+    const autoLoad = computed(() => !manualMode.value);
+    const manualMode = computed(
+      () => props.manual || props.manualAfter > 0 && requestCount.value >= props.manualAfter
+    );
+    const scrollToBottom = () => {
+      if (scrollableParent.value) {
+        scrollableParent.value.scrollTo({
+          top: scrollableParent.value.scrollHeight,
+          behavior: "instant"
+        });
+      } else {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "instant"
+        });
+      }
+    };
+    onMounted(() => {
+      elementManager.setupObservers();
+      elementManager.processServerLoadedElements(dataManager.getLastLoadedPage());
+      const shouldAutoScroll = props.autoScroll !== void 0 ? props.autoScroll : props.reverse;
+      if (shouldAutoScroll) {
+        scrollToBottom();
+      }
+      if (autoLoad.value) {
+        elementManager.enableTriggers();
+      }
+    });
+    onUnmounted(flushInfiniteScroll);
+    watch(
+      () => [autoLoad.value, props.onlyNext, props.onlyPrevious],
+      ([enabled]) => {
+        enabled ? elementManager.enableTriggers() : elementManager.disableTriggers();
+      }
+    );
+    expose({
+      fetchNext: dataManager.fetchNext,
+      fetchPrevious: dataManager.fetchPrevious,
+      hasPrevious: dataManager.hasPrevious,
+      hasNext: dataManager.hasNext
+    });
+    return () => {
+      var _a, _b, _c;
+      const renderElements = [];
+      const sharedExposed = {
+        loadingPrevious: loadingPrevious.value,
+        loadingNext: loadingNext.value,
+        hasPrevious: dataManager.hasPrevious(),
+        hasNext: dataManager.hasNext()
+      };
+      if (!props.startElement) {
+        const headerAutoMode = autoLoad.value && !props.onlyNext;
+        const exposedPrevious = {
+          loading: loadingPrevious.value,
+          fetch: dataManager.fetchPrevious,
+          autoMode: headerAutoMode,
+          manualMode: !headerAutoMode,
+          hasMore: dataManager.hasPrevious(),
+          ...sharedExposed
+        };
+        renderElements.push(
+          h(
+            "div",
+            { ref: startElementRef },
+            slots.previous ? slots.previous(exposedPrevious) : loadingPrevious.value ? (_a = slots.loading) == null ? void 0 : _a.call(slots, exposedPrevious) : void 0
+          )
+        );
+      }
+      renderElements.push(
+        h(
+          props.as,
+          { ...attrs, ref: itemsElementRef },
+          (_b = slots.default) == null ? void 0 : _b.call(slots, {
+            loading: loadingPrevious.value || loadingNext.value,
+            loadingPrevious: loadingPrevious.value,
+            loadingNext: loadingNext.value
+          })
+        )
+      );
+      if (!props.endElement) {
+        const footerAutoMode = autoLoad.value && !props.onlyPrevious;
+        const exposedNext = {
+          loading: loadingNext.value,
+          fetch: dataManager.fetchNext,
+          autoMode: footerAutoMode,
+          manualMode: !footerAutoMode,
+          hasMore: dataManager.hasNext(),
+          ...sharedExposed
+        };
+        renderElements.push(
+          h(
+            "div",
+            { ref: endElementRef },
+            slots.next ? slots.next(exposedNext) : loadingNext.value ? (_c = slots.loading) == null ? void 0 : _c.call(slots, exposedNext) : void 0
+          )
+        );
+      }
+      return h(Fragment, {}, props.reverse ? [...renderElements].reverse() : renderElements);
+    };
+  }
+});
+var noop2 = () => {
+};
+defineComponent({
+  name: "Link",
+  props: {
+    as: {
+      type: [String, Object],
+      default: "a"
+    },
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+    href: {
+      type: [String, Object],
+      default: ""
+    },
+    method: {
+      type: String,
+      default: "get"
+    },
+    replace: {
+      type: Boolean,
+      default: false
+    },
+    preserveScroll: {
+      type: [Boolean, String, Function],
+      default: false
+    },
+    preserveState: {
+      type: [Boolean, String, Function],
+      default: null
+    },
+    preserveUrl: {
+      type: Boolean,
+      default: false
+    },
+    only: {
+      type: Array,
+      default: () => []
+    },
+    except: {
+      type: Array,
+      default: () => []
+    },
+    headers: {
+      type: Object,
+      default: () => ({})
+    },
+    queryStringArrayFormat: {
+      type: String,
+      default: "brackets"
+    },
+    async: {
+      type: Boolean,
+      default: false
+    },
+    prefetch: {
+      type: [Boolean, String, Array],
+      default: false
+    },
+    cacheFor: {
+      type: [Number, String, Array],
+      default: 0
+    },
+    onStart: {
+      type: Function,
+      default: noop2
+    },
+    onProgress: {
+      type: Function,
+      default: noop2
+    },
+    onFinish: {
+      type: Function,
+      default: noop2
+    },
+    onBefore: {
+      type: Function,
+      default: noop2
+    },
+    onCancel: {
+      type: Function,
+      default: noop2
+    },
+    onSuccess: {
+      type: Function,
+      default: noop2
+    },
+    onError: {
+      type: Function,
+      default: noop2
+    },
+    onCancelToken: {
+      type: Function,
+      default: noop2
+    },
+    onPrefetching: {
+      type: Function,
+      default: noop2
+    },
+    onPrefetched: {
+      type: Function,
+      default: noop2
+    },
+    cacheTags: {
+      type: [String, Array],
+      default: () => []
+    },
+    viewTransition: {
+      type: [Boolean, Object],
+      default: false
+    }
+  },
+  setup(props, { slots, attrs }) {
+    const inFlightCount = ref(0);
+    const hoverTimeout = ref();
+    const prefetchModes = computed(() => {
+      if (props.prefetch === true) {
+        return ["hover"];
+      }
+      if (props.prefetch === false) {
+        return [];
+      }
+      if (Array.isArray(props.prefetch)) {
+        return props.prefetch;
+      }
+      return [props.prefetch];
+    });
+    const cacheForValue = computed(() => {
+      if (props.cacheFor !== 0) {
+        return props.cacheFor;
+      }
+      if (prefetchModes.value.length === 1 && prefetchModes.value[0] === "click") {
+        return 0;
+      }
+      return config.get("prefetch.cacheFor");
+    });
+    onMounted(() => {
+      if (prefetchModes.value.includes("mount")) {
+        prefetch();
+      }
+    });
+    onUnmounted(() => {
+      clearTimeout(hoverTimeout.value);
+    });
+    const method = computed(
+      () => isUrlMethodPair(props.href) ? props.href.method : (props.method ?? "get").toLowerCase()
+    );
+    const as = computed(() => {
+      if (typeof props.as !== "string" || props.as.toLowerCase() !== "a") {
+        return props.as;
+      }
+      return method.value !== "get" ? "button" : props.as.toLowerCase();
+    });
+    const mergeDataArray = computed(
+      () => mergeDataIntoQueryString(
+        method.value,
+        isUrlMethodPair(props.href) ? props.href.url : props.href,
+        props.data || {},
+        props.queryStringArrayFormat
+      )
+    );
+    const href = computed(() => mergeDataArray.value[0]);
+    const data = computed(() => mergeDataArray.value[1]);
+    const elProps = computed(() => {
+      if (as.value === "button") {
+        return { type: "button" };
+      }
+      if (as.value === "a" || typeof as.value !== "string") {
+        return { href: href.value };
+      }
+      return {};
+    });
+    const baseParams = computed(() => ({
+      data: data.value,
+      method: method.value,
+      replace: props.replace,
+      preserveScroll: props.preserveScroll,
+      preserveState: props.preserveState ?? method.value !== "get",
+      preserveUrl: props.preserveUrl,
+      only: props.only,
+      except: props.except,
+      headers: props.headers,
+      async: props.async
+    }));
+    const visitParams = computed(() => ({
+      ...baseParams.value,
+      viewTransition: props.viewTransition,
+      onCancelToken: props.onCancelToken,
+      onBefore: props.onBefore,
+      onStart: (visit) => {
+        var _a;
+        inFlightCount.value++;
+        (_a = props.onStart) == null ? void 0 : _a.call(props, visit);
+      },
+      onProgress: props.onProgress,
+      onFinish: (visit) => {
+        var _a;
+        inFlightCount.value--;
+        (_a = props.onFinish) == null ? void 0 : _a.call(props, visit);
+      },
+      onCancel: props.onCancel,
+      onSuccess: props.onSuccess,
+      onError: props.onError
+    }));
+    const prefetch = () => {
+      router.prefetch(
+        href.value,
+        {
+          ...baseParams.value,
+          onPrefetching: props.onPrefetching,
+          onPrefetched: props.onPrefetched
+        },
+        {
+          cacheFor: cacheForValue.value,
+          cacheTags: props.cacheTags
+        }
+      );
+    };
+    const regularEvents = {
+      onClick: (event) => {
+        if (shouldIntercept(event)) {
+          event.preventDefault();
+          router.visit(href.value, visitParams.value);
+        }
+      }
+    };
+    const prefetchHoverEvents = {
+      onMouseenter: () => {
+        hoverTimeout.value = setTimeout(() => {
+          prefetch();
+        }, config.get("prefetch.hoverDelay"));
+      },
+      onMouseleave: () => {
+        clearTimeout(hoverTimeout.value);
+      },
+      onClick: regularEvents.onClick
+    };
+    const prefetchClickEvents = {
+      onMousedown: (event) => {
+        if (shouldIntercept(event)) {
+          event.preventDefault();
+          prefetch();
+        }
+      },
+      onKeydown: (event) => {
+        if (shouldNavigate(event)) {
+          event.preventDefault();
+          prefetch();
+        }
+      },
+      onMouseup: (event) => {
+        event.preventDefault();
+        router.visit(href.value, visitParams.value);
+      },
+      onKeyup: (event) => {
+        if (shouldNavigate(event)) {
+          event.preventDefault();
+          router.visit(href.value, visitParams.value);
+        }
+      },
+      onClick: (event) => {
+        if (shouldIntercept(event)) {
+          event.preventDefault();
+        }
+      }
+    };
+    return () => {
+      return h(
+        as.value,
+        {
+          ...attrs,
+          ...elProps.value,
+          "data-loading": inFlightCount.value > 0 ? "" : void 0,
+          ...(() => {
+            if (prefetchModes.value.includes("hover")) {
+              return prefetchHoverEvents;
+            }
+            if (prefetchModes.value.includes("click")) {
+              return prefetchClickEvents;
+            }
+            return regularEvents;
+          })()
+        },
+        slots
+      );
+    };
+  }
+});
+defineComponent({
+  name: "WhenVisible",
+  props: {
+    data: {
+      type: [String, Array]
+    },
+    params: {
+      type: Object
+    },
+    buffer: {
+      type: Number,
+      default: 0
+    },
+    as: {
+      type: String,
+      default: "div"
+    },
+    always: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      loaded: false,
+      fetching: false,
+      observer: null
+    };
+  },
+  unmounted() {
+    var _a;
+    (_a = this.observer) == null ? void 0 : _a.disconnect();
+  },
+  mounted() {
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        var _a;
+        if (!entries[0].isIntersecting) {
+          return;
+        }
+        if (!this.$props.always) {
+          (_a = this.observer) == null ? void 0 : _a.disconnect();
+        }
+        if (this.fetching) {
+          return;
+        }
+        this.fetching = true;
+        const reloadParams = this.getReloadParams();
+        router.reload({
+          ...reloadParams,
+          onStart: (e) => {
+            var _a2;
+            this.fetching = true;
+            (_a2 = reloadParams.onStart) == null ? void 0 : _a2.call(reloadParams, e);
+          },
+          onFinish: (e) => {
+            var _a2;
+            this.loaded = true;
+            this.fetching = false;
+            (_a2 = reloadParams.onFinish) == null ? void 0 : _a2.call(reloadParams, e);
+          }
+        });
+      },
+      {
+        rootMargin: `${this.$props.buffer}px`
+      }
+    );
+    this.observer.observe(this.$el.nextSibling);
+  },
+  methods: {
+    getReloadParams() {
+      if (this.$props.data) {
+        return {
+          only: Array.isArray(this.$props.data) ? this.$props.data : [this.$props.data]
+        };
+      }
+      if (!this.$props.params) {
+        throw new Error("You must provide either a `data` or `params` prop.");
+      }
+      return this.$props.params;
+    }
+  },
+  render() {
+    const els = [];
+    if (this.$props.always || !this.loaded) {
+      els.push(h(this.$props.as));
+    }
+    if (!this.loaded) {
+      els.push(this.$slots.fallback ? this.$slots.fallback() : null);
+    } else if (this.$slots.default) {
+      els.push(this.$slots.default());
+    }
+    return els;
+  }
+});
+var config = config$1.extend({});
 async function resolvePageComponent(path, pages) {
   for (const p of Array.isArray(path) ? path : [path]) {
-    const page = pages[p];
-    if (typeof page === "undefined") {
+    const page2 = pages[p];
+    if (typeof page2 === "undefined") {
       continue;
     }
-    return typeof page === "function" ? page() : page;
+    return typeof page2 === "function" ? page2() : page2;
   }
   throw new Error(`Page not found: ${path}`);
 }
-function e() {
-  return e = Object.assign ? Object.assign.bind() : function(t) {
-    for (var r = 1; r < arguments.length; r++) {
-      var e2 = arguments[r];
-      for (var i2 in e2) ({}).hasOwnProperty.call(e2, i2) && (t[i2] = e2[i2]);
+function r() {
+  return r = Object.assign ? Object.assign.bind() : function(t) {
+    for (var e = 1; e < arguments.length; e++) {
+      var r2 = arguments[e];
+      for (var n2 in r2) ({}).hasOwnProperty.call(r2, n2) && (t[n2] = r2[n2]);
     }
     return t;
-  }, e.apply(null, arguments);
+  }, r.apply(null, arguments);
 }
-class i {
-  constructor(t, r, e2) {
-    var i2, n2;
-    this.name = t, this.definition = r, this.bindings = null != (i2 = r.bindings) ? i2 : {}, this.wheres = null != (n2 = r.wheres) ? n2 : {}, this.config = e2;
+class n {
+  constructor(t, e, r2) {
+    var n2, i2;
+    this.name = t, this.definition = e, this.bindings = null != (n2 = e.bindings) ? n2 : {}, this.wheres = null != (i2 = e.wheres) ? i2 : {}, this.config = r2;
   }
   get template() {
     const t = `${this.origin}/${this.definition.uri}`.replace(/\/+$/, "");
@@ -243,17 +1399,17 @@ class i {
     return this.config.absolute ? this.definition.domain ? `${this.config.url.match(/^\w+:\/\//)[0]}${this.definition.domain}${this.config.port ? `:${this.config.port}` : ""}` : this.config.url : "";
   }
   get parameterSegments() {
-    var t, r;
-    return null != (t = null == (r = this.template.match(/{[^}?]+\??}/g)) ? void 0 : r.map((t2) => ({ name: t2.replace(/{|\??}/g, ""), required: !/\?}$/.test(t2) }))) ? t : [];
+    var t, e;
+    return null != (t = null == (e = this.template.match(/{[^}?]+\??}/g)) ? void 0 : e.map((t2) => ({ name: t2.replace(/{|\??}/g, ""), required: !/\?}$/.test(t2) }))) ? t : [];
   }
-  matchesUrl(r) {
-    var e2;
+  matchesUrl(e) {
+    var r2;
     if (!this.definition.methods.includes("GET")) return false;
-    const i2 = this.template.replace(/[.*+$()[\]]/g, "\\$&").replace(/(\/?){([^}?]*)(\??)}/g, (t, r2, e3, i3) => {
-      var n3;
-      const s3 = `(?<${e3}>${(null == (n3 = this.wheres[e3]) ? void 0 : n3.replace(/(^\^)|(\$$)/g, "")) || "[^/?]+"})`;
-      return i3 ? `(${r2}${s3})?` : `${r2}${s3}`;
-    }).replace(/^\w+:\/\//, ""), [n2, s2] = r.replace(/^\w+:\/\//, "").split("?"), o2 = null != (e2 = new RegExp(`^${i2}/?$`).exec(n2)) ? e2 : new RegExp(`^${i2}/?$`).exec(decodeURI(n2));
+    const n2 = this.template.replace(/[.*+$()[\]]/g, "\\$&").replace(/(\/?){([^}?]*)(\??)}/g, (t, e2, r3, n3) => {
+      var i3;
+      const s3 = `(?<${r3}>${(null == (i3 = this.wheres[r3]) ? void 0 : i3.replace(/(^\^)|(\$$)/g, "")) || "[^/?]+"})`;
+      return n3 ? `(${e2}${s3})?` : `${e2}${s3}`;
+    }).replace(/^\w+:\/\//, ""), [i2, s2] = e.replace(/^\w+:\/\//, "").split("?"), o2 = null != (r2 = new RegExp(`^${n2}/?$`).exec(i2)) ? r2 : new RegExp(`^${n2}/?$`).exec(decodeURI(i2));
     if (o2) {
       for (const t in o2.groups) o2.groups[t] = "string" == typeof o2.groups[t] ? decodeURIComponent(o2.groups[t]) : o2.groups[t];
       return { params: o2.groups, query: parse(s2) };
@@ -261,55 +1417,55 @@ class i {
     return false;
   }
   compile(t) {
-    return this.parameterSegments.length ? this.template.replace(/{([^}?]+)(\??)}/g, (r, e2, i2) => {
-      var n2, s2;
-      if (!i2 && [null, void 0].includes(t[e2])) throw new Error(`Ziggy error: '${e2}' parameter is required for route '${this.name}'.`);
-      if (this.wheres[e2] && !new RegExp(`^${i2 ? `(${this.wheres[e2]})?` : this.wheres[e2]}$`).test(null != (s2 = t[e2]) ? s2 : "")) throw new Error(`Ziggy error: '${e2}' parameter '${t[e2]}' does not match required format '${this.wheres[e2]}' for route '${this.name}'.`);
-      return encodeURI(null != (n2 = t[e2]) ? n2 : "").replace(/%7C/g, "|").replace(/%25/g, "%").replace(/\$/g, "%24");
+    return this.parameterSegments.length ? this.template.replace(/{([^}?]+)(\??)}/g, (e, r2, n2) => {
+      var i2, s2;
+      if (!n2 && [null, void 0].includes(t[r2])) throw new Error(`Ziggy error: '${r2}' parameter is required for route '${this.name}'.`);
+      if (this.wheres[r2] && !new RegExp(`^${n2 ? `(${this.wheres[r2]})?` : this.wheres[r2]}$`).test(null != (s2 = t[r2]) ? s2 : "")) throw new Error(`Ziggy error: '${r2}' parameter '${t[r2]}' does not match required format '${this.wheres[r2]}' for route '${this.name}'.`);
+      return encodeURI(null != (i2 = t[r2]) ? i2 : "").replace(/%7C/g, "|").replace(/%25/g, "%").replace(/\$/g, "%24");
     }).replace(this.config.absolute ? /(\.[^/]+?)(\/\/)/ : /(^)(\/\/)/, "$1/").replace(/\/+$/, "") : this.template;
   }
 }
-class n extends String {
-  constructor(t, r, n2 = true, s2) {
-    if (super(), this.t = null != s2 ? s2 : "undefined" != typeof Ziggy ? Ziggy : null == globalThis ? void 0 : globalThis.Ziggy, this.t = e({}, this.t, { absolute: n2 }), t) {
+class i extends String {
+  constructor(t, e, i2 = true, s2) {
+    if (super(), this.t = null != s2 ? s2 : "undefined" != typeof Ziggy ? Ziggy : null == globalThis ? void 0 : globalThis.Ziggy, !this.t && "undefined" != typeof document && document.getElementById("ziggy-routes-json") && (globalThis.Ziggy = JSON.parse(document.getElementById("ziggy-routes-json").textContent), this.t = globalThis.Ziggy), this.t = r({}, this.t, { absolute: i2 }), t) {
       if (!this.t.routes[t]) throw new Error(`Ziggy error: route '${t}' is not in the route list.`);
-      this.i = new i(t, this.t.routes[t], this.t), this.o = this.u(r);
+      this.i = new n(t, this.t.routes[t], this.t), this.o = this.u(e);
     }
   }
   toString() {
-    const t = Object.keys(this.o).filter((t2) => !this.i.parameterSegments.some(({ name: r }) => r === t2)).filter((t2) => "_query" !== t2).reduce((t2, r) => e({}, t2, { [r]: this.o[r] }), {});
-    return this.i.compile(this.o) + stringify(e({}, t, this.o._query), { addQueryPrefix: true, arrayFormat: "indices", encodeValuesOnly: true, skipNulls: true, encoder: (t2, r) => "boolean" == typeof t2 ? Number(t2) : r(t2) });
+    const t = Object.keys(this.o).filter((t2) => !this.i.parameterSegments.some(({ name: e }) => e === t2)).filter((t2) => "_query" !== t2).reduce((t2, e) => r({}, t2, { [e]: this.o[e] }), {});
+    return this.i.compile(this.o) + stringify(r({}, t, this.o._query), { addQueryPrefix: true, arrayFormat: "indices", encodeValuesOnly: true, skipNulls: true, encoder: (t2, e) => "boolean" == typeof t2 ? Number(t2) : e(t2) });
   }
   h(t) {
     t ? this.t.absolute && t.startsWith("/") && (t = this.l().host + t) : t = this.m();
-    let r = {};
-    const [n2, s2] = Object.entries(this.t.routes).find(([e2, n3]) => r = new i(e2, n3, this.t).matchesUrl(t)) || [void 0, void 0];
-    return e({ name: n2 }, r, { route: s2 });
+    let e = {};
+    const [i2, s2] = Object.entries(this.t.routes).find(([r2, i3]) => e = new n(r2, i3, this.t).matchesUrl(t)) || [void 0, void 0];
+    return r({ name: i2 }, e, { route: s2 });
   }
   m() {
-    const { host: t, pathname: r, search: e2 } = this.l();
-    return (this.t.absolute ? t + r : r.replace(this.t.url.replace(/^\w*:\/\/[^/]+/, ""), "").replace(/^\/+/, "/")) + e2;
+    const { host: t, pathname: e, search: r2 } = this.l();
+    return (this.t.absolute ? t + e : e.replace(this.t.url.replace(/^\w*:\/\/[^/]+/, ""), "").replace(/^\/+/, "/")) + r2;
   }
-  current(t, r) {
-    const { name: n2, params: s2, query: o2, route: u } = this.h();
-    if (!t) return n2;
-    const h2 = new RegExp(`^${t.replace(/\./g, "\\.").replace(/\*/g, ".*")}$`).test(n2);
-    if ([null, void 0].includes(r) || !h2) return h2;
-    const a = new i(n2, u, this.t);
-    r = this.u(r, a);
-    const l = e({}, s2, o2);
-    if (Object.values(r).every((t2) => !t2) && !Object.values(l).some((t2) => void 0 !== t2)) return true;
-    const c = (t2, r2) => Object.entries(t2).every(([t3, e2]) => Array.isArray(e2) && Array.isArray(r2[t3]) ? e2.every((e3) => r2[t3].includes(e3)) : "object" == typeof e2 && "object" == typeof r2[t3] && null !== e2 && null !== r2[t3] ? c(e2, r2[t3]) : r2[t3] == e2);
-    return c(r, l);
+  current(t, e) {
+    const { name: i2, params: s2, query: o2, route: u } = this.h();
+    if (!t) return i2;
+    const h2 = new RegExp(`^${t.replace(/\./g, "\\.").replace(/\*/g, ".*")}$`).test(i2);
+    if ([null, void 0].includes(e) || !h2) return h2;
+    const a = new n(i2, u, this.t);
+    e = this.u(e, a);
+    const l = r({}, s2, o2);
+    if (Object.values(e).every((t2) => !t2) && !Object.values(l).some((t2) => void 0 !== t2)) return true;
+    const c = (t2, e2) => Object.entries(t2).every(([t3, r2]) => Array.isArray(r2) && Array.isArray(e2[t3]) ? r2.every((r3) => e2[t3].includes(r3) || e2[t3].includes(decodeURIComponent(r3))) : "object" == typeof r2 && "object" == typeof e2[t3] && null !== r2 && null !== e2[t3] ? c(r2, e2[t3]) : e2[t3] == r2 || e2[t3] == decodeURIComponent(r2));
+    return c(e, l);
   }
   l() {
-    var t, r, e2, i2, n2, s2;
+    var t, e, r2, n2, i2, s2;
     const { host: o2 = "", pathname: u = "", search: h2 = "" } = "undefined" != typeof window ? window.location : {};
-    return { host: null != (t = null == (r = this.t.location) ? void 0 : r.host) ? t : o2, pathname: null != (e2 = null == (i2 = this.t.location) ? void 0 : i2.pathname) ? e2 : u, search: null != (n2 = null == (s2 = this.t.location) ? void 0 : s2.search) ? n2 : h2 };
+    return { host: null != (t = null == (e = this.t.location) ? void 0 : e.host) ? t : o2, pathname: null != (r2 = null == (n2 = this.t.location) ? void 0 : n2.pathname) ? r2 : u, search: null != (i2 = null == (s2 = this.t.location) ? void 0 : s2.search) ? i2 : h2 };
   }
   get params() {
-    const { params: t, query: r } = this.h();
-    return e({}, t, r);
+    const { params: t, query: e } = this.h();
+    return r({}, t, e);
   }
   get routeParams() {
     return this.h().params;
@@ -320,35 +1476,35 @@ class n extends String {
   has(t) {
     return this.t.routes.hasOwnProperty(t);
   }
-  u(t = {}, r = this.i) {
+  u(t = {}, e = this.i) {
     null != t || (t = {}), t = ["string", "number"].includes(typeof t) ? [t] : t;
-    const i2 = r.parameterSegments.filter(({ name: t2 }) => !this.t.defaults[t2]);
-    return Array.isArray(t) ? t = t.reduce((t2, r2, n2) => e({}, t2, i2[n2] ? { [i2[n2].name]: r2 } : "object" == typeof r2 ? r2 : { [r2]: "" }), {}) : 1 !== i2.length || t[i2[0].name] || !t.hasOwnProperty(Object.values(r.bindings)[0]) && !t.hasOwnProperty("id") || (t = { [i2[0].name]: t }), e({}, this.$(r), this.p(t, r));
+    const n2 = e.parameterSegments.filter(({ name: t2 }) => !this.t.defaults[t2]);
+    return Array.isArray(t) ? t = t.reduce((t2, e2, i2) => r({}, t2, n2[i2] ? { [n2[i2].name]: e2 } : "object" == typeof e2 ? e2 : { [e2]: "" }), {}) : 1 !== n2.length || t[n2[0].name] || !t.hasOwnProperty(Object.values(e.bindings)[0]) && !t.hasOwnProperty("id") || (t = { [n2[0].name]: t }), r({}, this.p(e), this.$(t, e));
   }
-  $(t) {
-    return t.parameterSegments.filter(({ name: t2 }) => this.t.defaults[t2]).reduce((t2, { name: r }, i2) => e({}, t2, { [r]: this.t.defaults[r] }), {});
+  p(t) {
+    return t.parameterSegments.filter(({ name: t2 }) => this.t.defaults[t2]).reduce((t2, { name: e }, n2) => r({}, t2, { [e]: this.t.defaults[e] }), {});
   }
-  p(t, { bindings: r, parameterSegments: i2 }) {
-    return Object.entries(t).reduce((t2, [n2, s2]) => {
-      if (!s2 || "object" != typeof s2 || Array.isArray(s2) || !i2.some(({ name: t3 }) => t3 === n2)) return e({}, t2, { [n2]: s2 });
-      if (!s2.hasOwnProperty(r[n2])) {
-        if (!s2.hasOwnProperty("id")) throw new Error(`Ziggy error: object passed as '${n2}' parameter is missing route model binding key '${r[n2]}'.`);
-        r[n2] = "id";
+  $(t, { bindings: e, parameterSegments: n2 }) {
+    return Object.entries(t).reduce((t2, [i2, s2]) => {
+      if (!s2 || "object" != typeof s2 || Array.isArray(s2) || !n2.some(({ name: t3 }) => t3 === i2)) return r({}, t2, { [i2]: s2 });
+      if (!s2.hasOwnProperty(e[i2])) {
+        if (!s2.hasOwnProperty("id")) throw new Error(`Ziggy error: object passed as '${i2}' parameter is missing route model binding key '${e[i2]}'.`);
+        e[i2] = "id";
       }
-      return e({}, t2, { [n2]: s2[r[n2]] });
+      return r({}, t2, { [i2]: s2[e[i2]] });
     }, {});
   }
   valueOf() {
     return this.toString();
   }
 }
-function s(t, r, e2, i2) {
-  const s2 = new n(t, r, e2, i2);
+function s(t, e, r2, n2) {
+  const s2 = new i(t, e, r2, n2);
   return t ? s2.toString() : s2;
 }
-const o = { install(t, r) {
-  const e2 = (t2, e3, i2, n2 = r) => s(t2, e3, i2, n2);
-  parseInt(t.version) > 2 ? (t.config.globalProperties.route = e2, t.provide("route", e2)) : t.mixin({ methods: { route: e2 } });
+const o = { install(t, e) {
+  const r2 = (t2, r3, n2, i2 = e) => s(t2, r3, n2, i2);
+  parseInt(t.version) > 2 ? (t.config.globalProperties.route = r2, t.provide("route", r2)) : t.mixin({ methods: { route: r2 } });
 } };
 library.add(
   faBars,
@@ -401,21 +1557,21 @@ library.add(
   faPhone,
   faClock
 );
-const appName = "Pro Health Solutions";
+const appName = "Neema Tradings";
 createServer(
-  (page) => K({
-    page,
+  (page2) => createInertiaApp({
+    page: page2,
     render: renderToString,
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, /* @__PURE__ */ Object.assign({ "./Pages/AboutUS.vue": () => import("./assets/AboutUS-tqwjlQyS.js"), "./Pages/Admin.vue": () => import("./assets/Admin-Mos0tR6G.js"), "./Pages/ContactUs.vue": () => import("./assets/ContactUs-BMXy03NA.js"), "./Pages/Faq.vue": () => import("./assets/Faq-SlMuyMzC.js"), "./Pages/Home.vue": () => import("./assets/Home-TdVdSeH6.js"), "./Pages/Services/DigitalMarketing.vue": () => import("./assets/DigitalMarketing-CHD6oXR4.js"), "./Pages/Services/ECommerce.vue": () => import("./assets/ECommerce-DNRdm88y.js"), "./Pages/Services/GraphicDesign.vue": () => import("./assets/GraphicDesign-KXnHkuyg.js"), "./Pages/Services/IdentityDesign.vue": () => import("./assets/IdentityDesign-DYoiGWjZ.js"), "./Pages/Services/ProductDesign.vue": () => import("./assets/ProductDesign-0UlOS_RU.js"), "./Pages/Services/WebDesign.vue": () => import("./assets/WebDesign-CYWFryYy.js") })),
-    setup({ App, props, plugin }) {
-      return createSSRApp({ render: () => h(App, props) }).use(plugin).use(o, {
-        ...page.props.ziggy,
-        location: new URL(page.props.ziggy.location)
-      }).component("Head", ge).component("font-awesome-icon", FontAwesomeIcon);
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, /* @__PURE__ */ Object.assign({ "./Pages/AboutUS.vue": () => import("./assets/AboutUS-mOk5meI7.js"), "./Pages/AcceptInvitation.vue": () => import("./assets/AcceptInvitation-6Gbxk1wK.js"), "./Pages/Admin.vue": () => import("./assets/Admin-Bv-xh5Z5.js"), "./Pages/ContactUs.vue": () => import("./assets/ContactUs-hOZ36x6F.js"), "./Pages/Faq.vue": () => import("./assets/Faq-D-GwMqCE.js"), "./Pages/Home.vue": () => import("./assets/Home-Ccwn_jg-.js"), "./Pages/InvitationExpired.vue": () => import("./assets/InvitationExpired-CtJSmKxo.js"), "./Pages/Services/DigitalMarketing.vue": () => import("./assets/DigitalMarketing-DvnaQ7N7.js"), "./Pages/Services/ECommerce.vue": () => import("./assets/ECommerce-k1Wi6H-m.js"), "./Pages/Services/GraphicDesign.vue": () => import("./assets/GraphicDesign-BGDHrq2w.js"), "./Pages/Services/IdentityDesign.vue": () => import("./assets/IdentityDesign-eIlLFQ6j.js"), "./Pages/Services/ProductDesign.vue": () => import("./assets/ProductDesign-CDxT4lq1.js"), "./Pages/Services/WebDesign.vue": () => import("./assets/WebDesign-BbOUUa2L.js") })),
+    setup({ App: App2, props, plugin: plugin2 }) {
+      return createSSRApp({ render: () => h(App2, props) }).use(plugin2).use(o, {
+        ...page2.props.ziggy,
+        location: new URL(page2.props.ziggy.location)
+      }).component("Head", head_default).component("font-awesome-icon", FontAwesomeIcon);
     }
   })
 );
 export {
-  ge as g
+  head_default as h
 };

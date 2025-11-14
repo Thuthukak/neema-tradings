@@ -1,8 +1,8 @@
 import { ref, mergeProps, useSSRContext, resolveComponent, withCtx, createVNode, toDisplayString } from "vue";
 import { ssrRenderAttrs, ssrRenderAttr, ssrRenderList, ssrRenderClass, ssrRenderComponent, ssrInterpolate, ssrRenderStyle } from "vue/server-renderer";
-import { _ as _export_sfc, N as Navbar } from "./Navbar-Cbm9A3FB.js";
-import { F as Footer } from "./Footer-DX5y-tbw.js";
-import "axios";
+import { N as Navbar } from "./Navbar-BABML2an.js";
+import { _ as _sfc_main$2 } from "./Footer-Dp8jMWVf.js";
+import { _ as _export_sfc } from "./_plugin-vue_export-helper-1tPrXgE0.js";
 const _sfc_main$1 = {
   __name: "IdentityDesignCarousel",
   __ssrInlineRender: true,
@@ -132,7 +132,7 @@ const _sfc_main = {
       _push(`</div><div data-v-bca635a3><h3 class="fw-bold mb-1" data-v-bca635a3>Brand Collateral</h3><p class="mb-0" data-v-bca635a3>From business cards to letterheads, we design cohesive materials that strengthen your identity.</p></div></div></div></div></div></section><section data-v-bca635a3><div class="container mt-5 my-5 py-5 px-4" data-v-bca635a3><div class="row" data-v-bca635a3><div class="col-md-6 align-self-center" data-v-bca635a3><div class="mt-5" data-v-bca635a3><h1 class="fw-bold mb-3" data-v-bca635a3>Case Study</h1><p data-v-bca635a3>Experience the transformation of Bakili, an innovative IT company, through our bespoke identity design. From crafting captivating business colors to developing a distinctive logo and designing professional business cards, we’ve meticulously curated every element to reflect Bakili’s unique vision and values. Witness the seamless fusion of creativity and functionality as we bring Bakili’s brand identity to life, setting them apart in the competitive tech landscape</p></div></div><div class="col-md-6" data-v-bca635a3>`);
       _push(ssrRenderComponent(IdentityDesignCarousel, null, null, _parent));
       _push(`</div></div></div></section>`);
-      _push(ssrRenderComponent(Footer, { seo: __props.seo }, null, _parent));
+      _push(ssrRenderComponent(_sfc_main$2, { seo: __props.seo }, null, _parent));
       _push(`<!--]-->`);
     };
   }

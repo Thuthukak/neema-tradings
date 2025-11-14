@@ -1,8 +1,8 @@
 import { ref, mergeProps, useSSRContext, resolveComponent, withCtx, createVNode, toDisplayString } from "vue";
 import { ssrRenderAttrs, ssrRenderAttr, ssrRenderList, ssrRenderClass, ssrRenderComponent, ssrInterpolate, ssrRenderStyle } from "vue/server-renderer";
-import { _ as _export_sfc, N as Navbar } from "./Navbar-Cbm9A3FB.js";
-import { F as Footer } from "./Footer-DX5y-tbw.js";
-import "axios";
+import { N as Navbar } from "./Navbar-BABML2an.js";
+import { _ as _sfc_main$2 } from "./Footer-Dp8jMWVf.js";
+import { _ as _export_sfc } from "./_plugin-vue_export-helper-1tPrXgE0.js";
 const _sfc_main$1 = {
   __name: "ProductDesignCarousel",
   __ssrInlineRender: true,
@@ -132,7 +132,7 @@ const _sfc_main = {
       _push(`</div><div data-v-a9d568ad><h3 class="fw-bold mb-1" data-v-a9d568ad>Mockups &amp; Visualization</h3><p class="mb-0" data-v-a9d568ad>We create realistic product mockups so you can visualize before production.</p></div></div></div></div></div></section><section data-v-a9d568ad><div class="container mt-5 my-5 py-5 px-4" data-v-a9d568ad><div class="row" data-v-a9d568ad><div class="col-md-6" data-v-a9d568ad><div class="mt-5" data-v-a9d568ad><h1 class="fw-bold mb-3" data-v-a9d568ad>Case Study</h1><h5 class="fw-bold" data-v-a9d568ad>The Success Story of Maburas Hot Sauce</h5><p data-v-a9d568ad>Embark on a fiery journey through our creative collaboration with Mabura Hot Sauce — a bold brand bursting with flavor and attitude. Our mission? To bottle up that intensity in a visual identity that sizzles.</p><p data-v-a9d568ad>We kicked things off with a custom-designed logo, blending heat, heritage, and heart into a mark that instantly communicates flavor and fire. Next came a colorful lineup of labels, each one tailored to the unique personality of Mabura’s sauces — from the blazing heat of Habanero to the bright zing of Jalapeño. Every shade, every font, every flame-inspired detail was crafted to stand out on the shelf and ignite curiosity.</p><p data-v-a9d568ad>To turn up the heat even more, we designed a bold marketing poster — a visual explosion of spice, flavor, and attitude — to help Mabura command attention both online and on the streets.</p></div></div><div class="col-md-6" data-v-a9d568ad>`);
       _push(ssrRenderComponent(ProductDesignCarousel, null, null, _parent));
       _push(`</div></div></div></section>`);
-      _push(ssrRenderComponent(Footer, { seo: __props.seo }, null, _parent));
+      _push(ssrRenderComponent(_sfc_main$2, { seo: __props.seo }, null, _parent));
       _push(`<!--]-->`);
     };
   }

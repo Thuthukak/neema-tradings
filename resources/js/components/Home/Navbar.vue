@@ -2,7 +2,7 @@
   <nav class="navbar" :class="{ 'navbar-scrolled': isScrolled }">
     <div class="container mx-auto px-4">
       <!-- Desktop Navigation -->
-      <div class="hidden lg:flex justify-between items-center py-4">
+      <div class="hidden lg:flex  justify-content-between align-items-center gap-10">
         <!-- Logo -->
         <a href="/" class="navbar-brand">
           <img 
@@ -37,20 +37,18 @@
       </div>
 
       <!-- Mobile Navigation -->
-      <div class="lg:hidden flex justify-between items-center py-3">
+      <div class="lg:hidden flex justify-between items-center py-3 w-full">
         <!-- Mobile Logo -->
         <a href="/" class="navbar-brand-mobile">
           <img 
             src="/assets/images/logo/neema-logo.png"
             alt="Neema Tradings Logo" 
             class="navbar-logo-mobile" />
-          <div class="brand-text-mobile">
-            <span class="brand-name-mobile">Neema Tradings</span>
-          </div>
         </a>
 
+
         <!-- Mobile Menu Button -->
-        <button @click="toggleMobileMenu" class="mobile-menu-button" aria-label="Toggle menu">
+        <button @click="toggleMobileMenu" class="mobile-menu-button ml-auto" aria-label="Toggle menu">
           <span class="hamburger-line" :class="{ 'active': isMobileMenuOpen }"></span>
           <span class="hamburger-line" :class="{ 'active': isMobileMenuOpen }"></span>
           <span class="hamburger-line" :class="{ 'active': isMobileMenuOpen }"></span>
@@ -66,14 +64,10 @@
                 <img 
                   src="/assets/images/logo/neema-logo.png"
                   alt="Neema Tradings Logo" 
-                  class="mobile-menu-logo" />
-                <div>
-                  <div class="mobile-brand-name">Neema Tradings</div>
-                  <div class="mobile-brand-tagline">Your Reliably Idea</div>
-                </div>
+                  class="mobile-menu-logo" />                
               </div>
               <button @click="closeMobileMenu" class="mobile-close-button">
-                <font-awesome-icon :icon="['fas', 'times']" />
+                <!-- <font-awesome-icon :icon="['fas', 'times']" /> -->
               </button>
             </div>
 
@@ -104,11 +98,11 @@
               <div class="mobile-contact-info">
                 <div class="mobile-contact-item">
                   <font-awesome-icon :icon="['fas', 'envelope']" />
-                  <a href="mailto:nomiemotso@gmail.com">nomiemotso@gmail.com</a>
+                  <a href="mailto:enquiries@neematradings.co.za">enquiries@neematradings.co.za</a>
                 </div>
                 <div class="mobile-contact-item">
                   <font-awesome-icon :icon="['fas', 'phone']" />
-                  <a href="tel:+27738114652">+27 73 811 4652</a>
+                  <a href="tel:+27794997916">+27 79 499 7916</a>
                 </div>
               </div>
               <div class="mobile-social">
@@ -121,7 +115,7 @@
                 <a href="https://www.linkedin.com" class="mobile-social-link">
                   <font-awesome-icon :icon="['fab', 'linkedin-in']" />
                 </a>
-                <a href="https://wa.me/27738114652" class="mobile-social-link">
+                <a href="https://wa.me/27794997916" class="mobile-social-link">
                   <font-awesome-icon :icon="['fab', 'whatsapp']" />
                 </a>
               </div>
@@ -223,7 +217,7 @@ export default {
 }
 
 .navbar-logo {
-  height: 50px;
+  height: 60px;
   width: auto;
 }
 
@@ -359,14 +353,17 @@ export default {
 
 .hamburger-line.active:nth-child(1) {
   transform: rotate(45deg) translate(8px, 8px);
+  background:#ffffff
 }
 
 .hamburger-line.active:nth-child(2) {
   opacity: 0;
+   background:#ffffff
 }
 
 .hamburger-line.active:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -7px);
+  background:#ffffff
 }
 
 /* Mobile Menu Overlay */
@@ -437,7 +434,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0);
   border: none;
   border-radius: 8px;
   color: #ffffff;

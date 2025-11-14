@@ -1,220 +1,222 @@
 {
   "\u0000plugin-vue:export-helper": [
-    "/build/assets/Navbar-Cbm9A3FB.js",
-    "/build/assets/Navbar-B2FQOv8p.css"
+    "/build/assets/_plugin-vue_export-helper-1tPrXgE0.js"
   ],
   "node_modules/@inertiajs/vue3/dist/index.esm.js": [],
   "node_modules/laravel-vite-plugin/inertia-helpers/index.js": [],
   "node_modules/ziggy-js/dist/index.js": [],
   "resources/js/Layouts/HomeLayout.vue": [
-    "/build/assets/HomeLayout-zK1-0j7c.js"
+    "/build/assets/HomeLayout-CF1KbfSZ.js"
   ],
   "resources/js/Pages/AboutUS.vue": [
-    "/build/assets/AboutUS-tqwjlQyS.js",
+    "/build/assets/AboutUS-mOk5meI7.js",
     "/build/assets/AboutUS-DAC8FKtv.css"
   ],
   "resources/js/Pages/AboutUS.vue?vue&type=style&index=0&scoped=0b19f45d&lang.css": [
-    "/build/assets/AboutUS-tqwjlQyS.js",
+    "/build/assets/AboutUS-mOk5meI7.js",
     "/build/assets/AboutUS-DAC8FKtv.css"
   ],
-  "resources/js/Pages/Admin.vue": [
-    "/build/assets/Admin-Mos0tR6G.js",
-    "/build/assets/Admin-CUZ4VCdT.css"
+  "resources/js/Pages/AcceptInvitation.vue": [
+    "/build/assets/AcceptInvitation-6Gbxk1wK.js"
   ],
-  "resources/js/Pages/Admin.vue?vue&type=style&index=0&scoped=e1e24b7e&lang.css": [
-    "/build/assets/Admin-Mos0tR6G.js",
-    "/build/assets/Admin-CUZ4VCdT.css"
+  "resources/js/Pages/Admin.vue": [
+    "/build/assets/Admin-Bv-xh5Z5.js",
+    "/build/assets/Admin-BlO1zUMS.css"
+  ],
+  "resources/js/Pages/Admin.vue?vue&type=style&index=0&scoped=23a8ac93&lang.css": [
+    "/build/assets/Admin-Bv-xh5Z5.js",
+    "/build/assets/Admin-BlO1zUMS.css"
   ],
   "resources/js/Pages/ContactUs.vue": [
-    "/build/assets/ContactUs-BMXy03NA.js",
+    "/build/assets/ContactUs-hOZ36x6F.js",
     "/build/assets/ContactUs--Q4CbcFt.css"
   ],
   "resources/js/Pages/ContactUs.vue?vue&type=style&index=0&scoped=6894cba3&lang.css": [
-    "/build/assets/ContactUs-BMXy03NA.js",
+    "/build/assets/ContactUs-hOZ36x6F.js",
     "/build/assets/ContactUs--Q4CbcFt.css"
   ],
   "resources/js/Pages/Faq.vue": [
-    "/build/assets/Faq-SlMuyMzC.js",
+    "/build/assets/Faq-D-GwMqCE.js",
     "/build/assets/Faq-BYlCyZlt.css",
     "/build/assets/blue-question-DHk7brr8.webp",
     "/build/assets/faq-BG-oKU2vtex.png"
   ],
   "resources/js/Pages/Faq.vue?vue&type=style&index=0&scoped=07cf1e68&lang.css": [
-    "/build/assets/Faq-SlMuyMzC.js",
+    "/build/assets/Faq-D-GwMqCE.js",
     "/build/assets/Faq-BYlCyZlt.css",
     "/build/assets/blue-question-DHk7brr8.webp",
     "/build/assets/faq-BG-oKU2vtex.png"
   ],
   "resources/js/Pages/Home.vue": [
-    "/build/assets/Home-TdVdSeH6.js",
-    "/build/assets/Home-DOr_-oS1.css"
+    "/build/assets/Home-Ccwn_jg-.js",
+    "/build/assets/Home-opiY988u.css"
   ],
   "resources/js/Pages/Home.vue?vue&type=style&index=0&lang.css": [
-    "/build/assets/Home-TdVdSeH6.js",
-    "/build/assets/Home-DOr_-oS1.css"
+    "/build/assets/Home-Ccwn_jg-.js",
+    "/build/assets/Home-opiY988u.css"
+  ],
+  "resources/js/Pages/InvitationExpired.vue": [
+    "/build/assets/InvitationExpired-CtJSmKxo.js",
+    "/build/assets/InvitationExpired-JCaemRff.css"
+  ],
+  "resources/js/Pages/InvitationExpired.vue?vue&type=style&index=0&lang.css": [
+    "/build/assets/InvitationExpired-CtJSmKxo.js",
+    "/build/assets/InvitationExpired-JCaemRff.css"
   ],
   "resources/js/Pages/Services/DigitalMarketing.vue": [
-    "/build/assets/DigitalMarketing-CHD6oXR4.js",
+    "/build/assets/DigitalMarketing-DvnaQ7N7.js",
     "/build/assets/DigitalMarketing-DyWx9tY8.css",
     "/build/assets/6-must-havr-BTsjf0Q6.webp"
   ],
   "resources/js/Pages/Services/DigitalMarketing.vue?vue&type=style&index=0&scoped=611cd769&lang.css": [
-    "/build/assets/DigitalMarketing-CHD6oXR4.js",
+    "/build/assets/DigitalMarketing-DvnaQ7N7.js",
     "/build/assets/DigitalMarketing-DyWx9tY8.css",
     "/build/assets/6-must-havr-BTsjf0Q6.webp"
   ],
   "resources/js/Pages/Services/ECommerce.vue": [
-    "/build/assets/ECommerce-DNRdm88y.js",
+    "/build/assets/ECommerce-k1Wi6H-m.js",
     "/build/assets/ECommerce-BVRNw8ob.css",
     "/build/assets/ecommerce1-D1sZr2hi.jpg",
     "/build/assets/What-is-eCommerce.jpgw3-B_ZtqN84.webp"
   ],
   "resources/js/Pages/Services/ECommerce.vue?vue&type=style&index=0&scoped=05429bdf&lang.css": [
-    "/build/assets/ECommerce-DNRdm88y.js",
+    "/build/assets/ECommerce-k1Wi6H-m.js",
     "/build/assets/ECommerce-BVRNw8ob.css",
     "/build/assets/ecommerce1-D1sZr2hi.jpg",
     "/build/assets/What-is-eCommerce.jpgw3-B_ZtqN84.webp"
   ],
   "resources/js/Pages/Services/GraphicDesign.vue": [
-    "/build/assets/GraphicDesign-KXnHkuyg.js",
+    "/build/assets/GraphicDesign-BGDHrq2w.js",
     "/build/assets/GraphicDesign-CoaqAXIn.css",
     "/build/assets/graphic-CU81gzDU.png",
     "/build/assets/web-design-banner-nZ5WfKVA.jpg"
   ],
   "resources/js/Pages/Services/GraphicDesign.vue?vue&type=style&index=0&scoped=31fd4037&lang.css": [
-    "/build/assets/GraphicDesign-KXnHkuyg.js",
+    "/build/assets/GraphicDesign-BGDHrq2w.js",
     "/build/assets/GraphicDesign-CoaqAXIn.css",
     "/build/assets/graphic-CU81gzDU.png",
     "/build/assets/web-design-banner-nZ5WfKVA.jpg"
   ],
   "resources/js/Pages/Services/IdentityDesign.vue": [
-    "/build/assets/IdentityDesign-DYoiGWjZ.js",
+    "/build/assets/IdentityDesign-eIlLFQ6j.js",
     "/build/assets/IdentityDesign-1PMpleGh.css",
     "/build/assets/Visual-Identity-C3tnLL_p.png",
     "/build/assets/Identity-DASfeP1A.svg"
   ],
   "resources/js/Pages/Services/IdentityDesign.vue?vue&type=style&index=0&scoped=bca635a3&lang.css": [
-    "/build/assets/IdentityDesign-DYoiGWjZ.js",
+    "/build/assets/IdentityDesign-eIlLFQ6j.js",
     "/build/assets/IdentityDesign-1PMpleGh.css",
     "/build/assets/Visual-Identity-C3tnLL_p.png",
     "/build/assets/Identity-DASfeP1A.svg"
   ],
   "resources/js/Pages/Services/ProductDesign.vue": [
-    "/build/assets/ProductDesign-0UlOS_RU.js",
+    "/build/assets/ProductDesign-CDxT4lq1.js",
     "/build/assets/ProductDesign-CFAHtJxq.css",
     "/build/assets/product_design_overlay-C3qxcCA8.jpeg",
     "/build/assets/Product-concept-sketches-BQuGbwDN.jpg"
   ],
   "resources/js/Pages/Services/ProductDesign.vue?vue&type=style&index=0&scoped=a9d568ad&lang.css": [
-    "/build/assets/ProductDesign-0UlOS_RU.js",
+    "/build/assets/ProductDesign-CDxT4lq1.js",
     "/build/assets/ProductDesign-CFAHtJxq.css",
     "/build/assets/product_design_overlay-C3qxcCA8.jpeg",
     "/build/assets/Product-concept-sketches-BQuGbwDN.jpg"
   ],
   "resources/js/Pages/Services/WebDesign.vue": [
-    "/build/assets/WebDesign-CYWFryYy.js",
+    "/build/assets/WebDesign-BbOUUa2L.js",
     "/build/assets/WebDesign-DxjWDWCq.css",
     "/build/assets/360_F_75270-X6XgZC96.jpg",
     "/build/assets/what-is-web-design-infographic-DYDtyrFV.jpg"
   ],
   "resources/js/Pages/Services/WebDesign.vue?vue&type=style&index=0&scoped=67942148&lang.css": [
-    "/build/assets/WebDesign-CYWFryYy.js",
+    "/build/assets/WebDesign-BbOUUa2L.js",
     "/build/assets/WebDesign-DxjWDWCq.css",
     "/build/assets/360_F_75270-X6XgZC96.jpg",
     "/build/assets/what-is-web-design-infographic-DYDtyrFV.jpg"
   ],
-  "resources/js/components/Home/EstimateModal.vue": [
-    "/build/assets/Navbar-Cbm9A3FB.js",
-    "/build/assets/Navbar-B2FQOv8p.css"
-  ],
-  "resources/js/components/Home/EstimateModal.vue?vue&type=style&index=0&scoped=aec4ed00&lang.css": [
-    "/build/assets/Navbar-Cbm9A3FB.js",
-    "/build/assets/Navbar-B2FQOv8p.css"
-  ],
   "resources/js/components/Home/FaqComponent.vue": [
-    "/build/assets/Faq-SlMuyMzC.js",
+    "/build/assets/Faq-D-GwMqCE.js",
     "/build/assets/Faq-BYlCyZlt.css",
     "/build/assets/blue-question-DHk7brr8.webp",
     "/build/assets/faq-BG-oKU2vtex.png"
   ],
   "resources/js/components/Home/FaqComponent.vue?vue&type=style&index=0&scoped=eadeef3f&lang.css": [
-    "/build/assets/Faq-SlMuyMzC.js",
+    "/build/assets/Faq-D-GwMqCE.js",
     "/build/assets/Faq-BYlCyZlt.css",
     "/build/assets/blue-question-DHk7brr8.webp",
     "/build/assets/faq-BG-oKU2vtex.png"
   ],
   "resources/js/components/Home/Footer.vue": [
-    "/build/assets/Footer-DX5y-tbw.js",
-    "/build/assets/Footer-BVRwOGi2.css"
+    "/build/assets/Footer-Dp8jMWVf.js",
+    "/build/assets/Footer-20SBS22L.css"
   ],
-  "resources/js/components/Home/Footer.vue?vue&type=style&index=0&scoped=71f51f87&lang.css": [
-    "/build/assets/Footer-DX5y-tbw.js",
-    "/build/assets/Footer-BVRwOGi2.css"
+  "resources/js/components/Home/Footer.vue?vue&type=style&index=0&lang.css": [
+    "/build/assets/Footer-Dp8jMWVf.js",
+    "/build/assets/Footer-20SBS22L.css"
   ],
   "resources/js/components/Home/Navbar.vue": [
-    "/build/assets/Navbar-Cbm9A3FB.js",
-    "/build/assets/Navbar-B2FQOv8p.css"
+    "/build/assets/Navbar-BABML2an.js",
+    "/build/assets/Navbar-ql7fKaAM.css"
   ],
-  "resources/js/components/Home/Navbar.vue?vue&type=style&index=0&scoped=2941d0d3&lang.css": [
-    "/build/assets/Navbar-Cbm9A3FB.js",
-    "/build/assets/Navbar-B2FQOv8p.css"
+  "resources/js/components/Home/Navbar.vue?vue&type=style&index=0&scoped=d01299a7&lang.css": [
+    "/build/assets/Navbar-BABML2an.js",
+    "/build/assets/Navbar-ql7fKaAM.css"
   ],
   "resources/js/components/Home/Services/ECommerceCarousel.vue": [
-    "/build/assets/ECommerce-DNRdm88y.js",
+    "/build/assets/ECommerce-k1Wi6H-m.js",
     "/build/assets/ECommerce-BVRNw8ob.css",
     "/build/assets/ecommerce1-D1sZr2hi.jpg",
     "/build/assets/What-is-eCommerce.jpgw3-B_ZtqN84.webp"
   ],
   "resources/js/components/Home/Services/ECommerceCarousel.vue?vue&type=style&index=0&scoped=afb4f970&lang.css": [
-    "/build/assets/ECommerce-DNRdm88y.js",
+    "/build/assets/ECommerce-k1Wi6H-m.js",
     "/build/assets/ECommerce-BVRNw8ob.css",
     "/build/assets/ecommerce1-D1sZr2hi.jpg",
     "/build/assets/What-is-eCommerce.jpgw3-B_ZtqN84.webp"
   ],
   "resources/js/components/Home/Services/GraphicDesignCarousel.vue": [
-    "/build/assets/GraphicDesign-KXnHkuyg.js",
+    "/build/assets/GraphicDesign-BGDHrq2w.js",
     "/build/assets/GraphicDesign-CoaqAXIn.css",
     "/build/assets/graphic-CU81gzDU.png",
     "/build/assets/web-design-banner-nZ5WfKVA.jpg"
   ],
   "resources/js/components/Home/Services/GraphicDesignCarousel.vue?vue&type=style&index=0&scoped=22444185&lang.css": [
-    "/build/assets/GraphicDesign-KXnHkuyg.js",
+    "/build/assets/GraphicDesign-BGDHrq2w.js",
     "/build/assets/GraphicDesign-CoaqAXIn.css",
     "/build/assets/graphic-CU81gzDU.png",
     "/build/assets/web-design-banner-nZ5WfKVA.jpg"
   ],
   "resources/js/components/Home/Services/IdentityDesignCarousel.vue": [
-    "/build/assets/IdentityDesign-DYoiGWjZ.js",
+    "/build/assets/IdentityDesign-eIlLFQ6j.js",
     "/build/assets/IdentityDesign-1PMpleGh.css",
     "/build/assets/Visual-Identity-C3tnLL_p.png",
     "/build/assets/Identity-DASfeP1A.svg"
   ],
   "resources/js/components/Home/Services/IdentityDesignCarousel.vue?vue&type=style&index=0&scoped=a8b197f8&lang.css": [
-    "/build/assets/IdentityDesign-DYoiGWjZ.js",
+    "/build/assets/IdentityDesign-eIlLFQ6j.js",
     "/build/assets/IdentityDesign-1PMpleGh.css",
     "/build/assets/Visual-Identity-C3tnLL_p.png",
     "/build/assets/Identity-DASfeP1A.svg"
   ],
   "resources/js/components/Home/Services/ProductDesignCarousel.vue": [
-    "/build/assets/ProductDesign-0UlOS_RU.js",
+    "/build/assets/ProductDesign-CDxT4lq1.js",
     "/build/assets/ProductDesign-CFAHtJxq.css",
     "/build/assets/product_design_overlay-C3qxcCA8.jpeg",
     "/build/assets/Product-concept-sketches-BQuGbwDN.jpg"
   ],
   "resources/js/components/Home/Services/ProductDesignCarousel.vue?vue&type=style&index=0&scoped=c95ed302&lang.css": [
-    "/build/assets/ProductDesign-0UlOS_RU.js",
+    "/build/assets/ProductDesign-CDxT4lq1.js",
     "/build/assets/ProductDesign-CFAHtJxq.css",
     "/build/assets/product_design_overlay-C3qxcCA8.jpeg",
     "/build/assets/Product-concept-sketches-BQuGbwDN.jpg"
   ],
   "resources/js/components/Home/Services/WebDesignCarousel.vue": [
-    "/build/assets/WebDesign-CYWFryYy.js",
+    "/build/assets/WebDesign-BbOUUa2L.js",
     "/build/assets/WebDesign-DxjWDWCq.css",
     "/build/assets/360_F_75270-X6XgZC96.jpg",
     "/build/assets/what-is-web-design-infographic-DYDtyrFV.jpg"
   ],
   "resources/js/components/Home/Services/WebDesignCarousel.vue?vue&type=style&index=0&scoped=e2072713&lang.css": [
-    "/build/assets/WebDesign-CYWFryYy.js",
+    "/build/assets/WebDesign-BbOUUa2L.js",
     "/build/assets/WebDesign-DxjWDWCq.css",
     "/build/assets/360_F_75270-X6XgZC96.jpg",
     "/build/assets/what-is-web-design-infographic-DYDtyrFV.jpg"

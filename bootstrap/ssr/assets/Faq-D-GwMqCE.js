@@ -1,9 +1,9 @@
 import { ref, computed, mergeProps, useSSRContext, onMounted, resolveComponent, withCtx, createVNode, toDisplayString } from "vue";
 import { ssrRenderAttrs, ssrRenderList, ssrRenderClass, ssrRenderAttr, ssrInterpolate, ssrRenderComponent } from "vue/server-renderer";
-import { L as Layout } from "./HomeLayout-zK1-0j7c.js";
-import { _ as _export_sfc } from "./Navbar-Cbm9A3FB.js";
-import "./Footer-DX5y-tbw.js";
-import "axios";
+import { L as Layout } from "./HomeLayout-CF1KbfSZ.js";
+import { _ as _export_sfc } from "./_plugin-vue_export-helper-1tPrXgE0.js";
+import "./Navbar-BABML2an.js";
+import "./Footer-Dp8jMWVf.js";
 const _sfc_main$1 = {
   __name: "FaqComponent",
   __ssrInlineRender: true,

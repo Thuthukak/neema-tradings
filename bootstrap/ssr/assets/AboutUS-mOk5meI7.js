@@ -1,21 +1,20 @@
-import { _ as _export_sfc, N as Navbar } from "./Navbar-Cbm9A3FB.js";
+import { N as Navbar } from "./Navbar-BABML2an.js";
 import { resolveComponent, withCtx, createVNode, createBlock, toDisplayString, openBlock, Fragment, renderList, computed, onMounted, useSSRContext } from "vue";
-import { g as ge } from "../ssr.js";
+import { h as head_default } from "../ssr.js";
 import { ssrRenderComponent, ssrInterpolate, ssrRenderAttr, ssrRenderList, ssrRenderStyle } from "vue/server-renderer";
-import "axios";
+import { _ as _export_sfc } from "./_plugin-vue_export-helper-1tPrXgE0.js";
 import "@vue/server-renderer";
 import "@inertiajs/core";
-import "es-toolkit";
-import "es-toolkit/compat";
+import "lodash-es";
 import "@inertiajs/core/server";
-import "qs";
+import "qs-esm";
 import "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/vue-fontawesome";
 import "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/free-brands-svg-icons";
 const _sfc_main = {
   name: "AboutUS",
-  components: { Navbar, Head: ge },
+  components: { Navbar, Head: head_default },
   props: {
     seo: {
       type: Object,

@@ -1,8 +1,8 @@
 <template>
-  <div class="space-y-4 sm:space-y-6 p-4 sm:p-6">
+  <div class="bg-white ">
     <!-- Header -->
     <div>
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Dashboard</h1>
+      <h1 class="text-xl sm:text-2xl fw-bold text-gray-900">Dashboard</h1>
     </div>
 
     <!-- Loading State -->
@@ -13,7 +13,7 @@
     <!-- Dashboard Content -->
     <div v-else class="space-y-4 sm:space-y-6">
       <!-- Main Stats Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-4 sm:gap-5">
         <!-- New Enquiries -->
         <div class="bg-white overflow-hidden shadow rounded-lg">
           <div class="p-4 sm:p-5">

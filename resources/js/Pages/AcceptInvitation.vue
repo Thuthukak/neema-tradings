@@ -1,77 +1,88 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-      <div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Complete Your Registration
-        </h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
-          Create your account for {{ email }}
-        </p>
-      </div>
-      <form class="mt-8 space-y-6" @submit.prevent="submitForm">
-        <div class="rounded-md shadow-sm space-y-4">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              id="name"
-              v-model="form.name"
-              type="text"
-              required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              :class="{ 'border-red-300': form.errors.name }"
-              placeholder="John Doe"
-            />
-            <p v-if="form.errors.name" class="mt-2 text-sm text-red-600">
-              {{ form.errors.name[0] }}
-            </p>
+  <div class="container-fluid p-0">
+    <div class="row min-vh-100 m-0">
+      <!-- Hero Image (8 columns) -->
+          <div class="col-md-8 d-none d-md-block p-0">
+            <img 
+            src="/assets/images/logo/neema-logo-badge.png" 
+            alt="Hero Image" 
+            class="w-100 min-vh-100 object-fit-cover">
           </div>
 
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              id="password"
-              v-model="form.password"
-              type="password"
-              required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              :class="{ 'border-red-300': form.errors.password }"
-              placeholder="••••••••"
-            />
-            <p v-if="form.errors.password" class="mt-2 text-sm text-red-600">
-              {{ form.errors.password[0] }}
-            </p>
-          </div>
+          <!-- Auth Form (4 columns) -->
+          <div class="col-md-4 d-flex bg-neema-primary align-items-center justify-content-center p-0">
+            <div class="w-100  p-4">
+              <h2 class="text-center text-white fw-bold mb-3">
+                Complete Your Registration
+              </h2>
+              <p class="mt-2 text-center text-sm text-white mb-5">
+                Create your account for {{ email }}
+              </p>
 
-          <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
-              Confirm Password
-            </label>
-            <input
-              id="password_confirmation"
-              v-model="form.password_confirmation"
-              type="password"
-              required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="••••••••"
-            />
-          </div>
-        </div>
+              <form @submit.prevent="submitForm">
+                <div class="mb-3">
+                    <label for="name" class="form-label text-white">
+                      Full Name
+                    </label>
+                    <input
+                      id="name"
+                      v-model="form.name"
+                      type="text"
+                      required
+                      class="form-control"
+                      :class="{ 'border-red-300': form.errors.name }"
+                      placeholder="John Doe"
+                    />
+                    <p v-if="form.errors.name" class="mt-2 text-sm text-red-600">
+                      {{ form.errors.name[0] }}
+                    </p>
+                  </div>
 
-        <div>
-          <button
-            type="submit"
-            :disabled="form.processing"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {{ form.processing ? 'Creating Account...' : 'Create Account' }}
-          </button>
-        </div>
-      </form>
+                  <div class="mb-3">
+                    <label for="password" class="form-label text-white">
+                      Password
+                    </label>
+                    <input
+                      id="password"
+                      v-model="form.password"
+                      type="password"
+                      required
+                      class="form-control"
+                      :class="{ 'border-red-300': form.errors.password }"
+                      placeholder="••••••••"
+                    />
+                    <p v-if="form.errors.password" class="mt-2 text-sm text-red-600">
+                      {{ form.errors.password[0] }}
+                    </p>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="password_confirmation" class="form-label text-white">
+                      Confirm Password
+                    </label>
+                    <input
+                      id="password_confirmation"
+                      v-model="form.password_confirmation"
+                      type="password"
+                      required
+                      class="form-control"
+                      placeholder="••••••••"
+                    />
+                  </div>
+                
+
+                
+                  <button
+                    type="submit"
+                    :disabled="form.processing"
+                    class="neema-btn neema-btn-secondary border w-100"
+                  >
+                    {{ form.processing ? 'Creating Account...' : 'Create Account' }}
+                  </button>
+                
+              </form>
+            </div>
+          </div>
     </div>
   </div>
 </template>

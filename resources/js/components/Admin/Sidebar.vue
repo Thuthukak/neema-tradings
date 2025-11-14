@@ -3,18 +3,18 @@
 
     <!-- Logo Section -->
     <div class="flex items-center gap-3 mb-4">
-      <div class="bg-white text-white flex items-center justify-center rounded-lg min-w-[40px] h-10 p-1">
+      <div class="bg-white w-full text-white flex items-center justify-center rounded-lg min-w-[40px] h-10 p-1">
         <img 
           v-if="collapsed" 
-          src="/assets/images/p-logo.png" 
+          src="/assets/images/logo/neema-logo-badge.png" 
           alt="Logo" 
           class="w-8 h-8"
         >
         <img 
           v-else 
-          src="/assets/images/penda_logo2.png" 
+          src="/assets/images/logo/neema-logo.png" 
           alt="Logo" 
-          class="w-40 h-8"
+          class="w-44 h-10"
         >
       </div>
     </div>
@@ -133,11 +133,11 @@ export default {
   methods: {
     logout() {
       axios.post('/logout').then(() => {
-        window.location.href = '/login';
+        window.location.href = '/admin/auth';
       }).catch((error) => {
         console.error('Logout error:', error);
         // Fallback logout
-        window.location.href = '/login';
+        window.location.href = '/admin/auth';
       });
     },
   },
