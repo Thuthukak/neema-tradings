@@ -68,7 +68,7 @@
             <div class="section-label">About Us</div>
             <h2 class="section-title">Let Me Help You Help Your Business!</h2>
             <p class="about-text">
-              Founded by <strong>Nomthandazo Nkosi</strong>, Neema Tradings is dedicated to simplifying the complex world of business compliance and development. With years of expertise in Central Supplier Database registration, company compliance, and tender processes, we've helped countless businesses unlock new opportunities and achieve sustainable growth.
+              Founded by <strong>Nomthandazo Nkosi</strong>, a qualified project manager, bid specialist and business developer, with years of experience in tender bidding and training, masters candidate. Neema Tradings is dedicated to simplifying the complex world of business compliance and development. With years of expertise in Central Supplier Database registration, company compliance, and tender processes, we've helped countless businesses unlock new opportunities and achieve sustainable growth.
             </p>
             <p class="about-text">
               Our mission is to be your trusted partner in navigating the administrative and regulatory landscape, allowing you to focus on what you do best—growing your business and serving your customers.
@@ -216,7 +216,7 @@
               <font-awesome-icon :icon="['fas', 'graduation-cap']" />
             </div>
             <h3>Tender/RFQ Masterclass</h3>
-            <div class="service-price">R400</div>
+            <div class="service-price">R500</div>
             <p class="service-subtitle">One-on-one Everything Tender/RFQ Class</p>
             <ul class="service-list">
               <li>Understanding compliance requirements</li>

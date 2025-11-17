@@ -1,6 +1,6 @@
 import { ref, mergeProps, useSSRContext, unref, withCtx, createVNode, toDisplayString } from "vue";
 import { ssrRenderAttrs, ssrRenderAttr, ssrRenderList, ssrRenderClass, ssrRenderComponent, ssrInterpolate, ssrRenderStyle } from "vue/server-renderer";
-import { N as Navbar } from "./Navbar-BABML2an.js";
+import { N as Navbar } from "./Navbar-BBPlxsgY.js";
 import { _ as _sfc_main$2 } from "./Footer-Dp8jMWVf.js";
 import { _ as _export_sfc } from "./_plugin-vue_export-helper-1tPrXgE0.js";
 import { h as head_default } from "../ssr.js";

@@ -1,4 +1,4 @@
-import { N as Navbar } from "./Navbar-BABML2an.js";
+import { N as Navbar } from "./Navbar-BBPlxsgY.js";
 import { resolveComponent, withCtx, createVNode, createBlock, toDisplayString, openBlock, Fragment, renderList, computed, onMounted, useSSRContext } from "vue";
 import { h as head_default } from "../ssr.js";
 import { ssrRenderComponent, ssrInterpolate, ssrRenderAttr, ssrRenderList, ssrRenderStyle } from "vue/server-renderer";

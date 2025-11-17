@@ -1,4 +1,4 @@
-import { N as Navbar } from "./Navbar-BABML2an.js";
+import { N as Navbar } from "./Navbar-BBPlxsgY.js";
 import { _ as _sfc_main$1 } from "./Footer-Dp8jMWVf.js";
 import { resolveComponent, mergeProps, useSSRContext } from "vue";
 import { ssrRenderAttrs, ssrRenderComponent, ssrRenderSlot } from "vue/server-renderer";

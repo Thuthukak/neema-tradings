@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewEnquiryNotification;
 
 class ContactController extends Controller
 {
@@ -12,52 +14,67 @@ class ContactController extends Controller
      * Store a new contact enquiry
      */
     public function contactForm(Request $request)
-    {
-        Log::info('Processing contact form submission');
+{
+    Log::info('Processing contact form submission');
+    
+    try {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'service' => 'required|string|max:255',
+            'message' => 'required|string|max:2000',
+            'status' => 'nullable|string|in:new,in_progress,waiting_for_response,resolved,spam,closed',
+        ]);
         
-        try {
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'phone' => 'required|string|max:20',
-                'email' => 'nullable|email|max:255',
-                'service' => 'required|string|max:255',
-                'message' => 'required|string|max:2000',
-                'status' => 'nullable|string|in:new,in_progress,waiting_for_response,resolved,spam,closed',
-            ]);
-            
-            Log::info('Validated contact data', ['data' => $validated]);
-            
-            // Set default status if not provided
-            if (!isset($validated['status'])) {
-                $validated['status'] = 'new';
-            }
-            
-            $contact = Contact::create($validated);
-            
-            Log::info('Contact created successfully', ['id' => $contact->id]);
-            
-            return response()->json([
-                'message' => 'Enquiry submitted successfully',
-                'contact' => $contact
-            ], 201);
-            
-        } catch (ValidationException $e) {
-            Log::warning('Validation failed', ['errors' => $e->errors()]);
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
-            
-        } catch (\Exception $e) {
-            Log::error('Error creating contact', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            return response()->json([
-                'message' => 'An error occurred while processing your enquiry'
-            ], 500);
+        Log::info('Validated contact data', ['data' => $validated]);
+        
+        // Set default status if not provided
+        if (!isset($validated['status'])) {
+            $validated['status'] = 'new';
         }
+
+        $logo = config('app.logo');
+        
+        $contact = Contact::create($validated);
+        
+        Log::info('Contact created successfully', ['id' => $contact->id]);
+        
+        // Send email notification to admin
+        try {
+            $adminEmail = config('mail.from.admin_address');
+            Mail::to($adminEmail)->send(new NewEnquiryNotification($contact));
+            Log::info('Admin notification email sent', ['admin_email' => $adminEmail]);
+        } catch (\Exception $emailException) {
+            // Log email error but don't fail the request
+            Log::error('Failed to send admin notification email', [
+                'error' => $emailException->getMessage()
+            ]);
+        }
+        
+        return response()->json([
+            'message' => 'Enquiry submitted successfully',
+            'contact' => $contact,
+            'logo' => $logo
+        ], 201);
+        
+    } catch (ValidationException $e) {
+        Log::warning('Validation failed', ['errors' => $e->errors()]);
+        return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $e->errors()
+        ], 422);
+        
+    } catch (\Exception $e) {
+        Log::error('Error creating contact', [
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return response()->json([
+            'message' => 'An error occurred while processing your enquiry'
+        ], 500);
     }
+}
     
     /**
      * Get paginated list of contacts with search and filters

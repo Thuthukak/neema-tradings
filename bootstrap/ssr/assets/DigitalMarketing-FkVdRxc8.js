@@ -1,5 +1,5 @@
 import { ssrRenderComponent, ssrRenderAttr, ssrRenderStyle } from "vue/server-renderer";
-import { N as Navbar } from "./Navbar-BABML2an.js";
+import { N as Navbar } from "./Navbar-BBPlxsgY.js";
 import { _ as _sfc_main$1 } from "./Footer-Dp8jMWVf.js";
 import { useSSRContext } from "vue";
 import { _ as _export_sfc } from "./_plugin-vue_export-helper-1tPrXgE0.js";
